@@ -68,11 +68,9 @@ export default function CategoryList() {
     nextPage,
     previousPage,
     setPageSize,
-  } = useTable({
-    columns,
-  });
+  } = useTable({ columns });
 
-  setOptions((prev) => ({
+  setOptions(prev => ({
     ...prev,
     meta: {
       ...prev.meta,
@@ -94,9 +92,9 @@ export default function CategoryList() {
       <div style={{ maxWidth: "100%", overflowY: "scroll" }}>
         <table>
           <thead>
-            {getHeaderGroups().map((headerGroup) => (
+            {getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
+                {headerGroup.headers.map(header => (
                   <th key={header.id}>
                     {!header.isPlaceholder &&
                       flexRender(
@@ -109,9 +107,9 @@ export default function CategoryList() {
             ))}
           </thead>
           <tbody>
-            {getRowModel().rows.map((row) => (
+            {getRowModel().rows.map(row => (
               <tr key={row.id}>
-                {row.getVisibleCells().map((cell) => (
+                {row.getVisibleCells().map(cell => (
                   <td key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
@@ -151,7 +149,7 @@ export default function CategoryList() {
           <input
             type="number"
             defaultValue={getState().pagination.pageIndex + 1}
-            onChange={(e) => {
+            onChange={e => {
               const page = e.target.value ? Number(e.target.value) - 1 : 0;
               setPageIndex(page);
             }}
@@ -159,11 +157,11 @@ export default function CategoryList() {
         </span>{" "}
         <select
           value={getState().pagination.pageSize}
-          onChange={(e) => {
+          onChange={e => {
             setPageSize(Number(e.target.value));
           }}
         >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
+          {[10, 20, 30, 40, 50].map(pageSize => (
             <option key={pageSize} value={pageSize}>
               Show {pageSize}
             </option>

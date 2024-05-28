@@ -2,6 +2,34 @@ body {
   margin: 0px;
 }
 
+.uppy-Dashboard-inner {
+  width: 100% !important;
+  max-height: 125px;
+}
+
+.dashboard-container .uppy-Dashboard-inner {
+  width: 100% !important;
+  max-height: 350px;
+}
+
+@media screen and (max-width: 610px) {
+  .dashboard-container .uppy-Dashboard-inner {
+    max-height: 50vh !important;
+  }
+}
+
+.uppy-DashboardContent-back,
+.uppy-DashboardContent-addMore {
+  background-color: #94a3b8;
+  color: #fff !important;
+  transition: background-color 200ms;
+
+  &:hover {
+    background-color: #64748b;
+    color: #fff !important;
+  }
+}
+
 table {
   border-spacing: 0;
   border: 1px solid black;

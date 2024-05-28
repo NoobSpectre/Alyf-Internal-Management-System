@@ -1,7 +1,7 @@
 "use client";
 
+import { supabaseClient } from "@lib/supabase-client";
 import { AuthBindings } from "@refinedev/core";
-import { supabaseClient } from "@utility/supabase-client";
 import Cookies from "js-cookie";
 
 export const authProvider: AuthBindings = {
@@ -127,7 +127,7 @@ export const authProvider: AuthBindings = {
 
     return null;
   },
-  onError: async (error) => {
+  onError: async error => {
     if (error?.code === "PGRST301" || error?.code === 401) {
       return {
         logout: true,
