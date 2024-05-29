@@ -1,4 +1,8 @@
 "use client";
+
+import { Create } from "@/components/crud";
+import { FormTitle, ShowHeaderButtons } from "@/components/ui";
+import { TConfig, TLocation, TOption, TProject } from "@/types";
 import {
   Box,
   Button,
@@ -23,15 +27,13 @@ import {
 import { DateField, NumberField } from "@refinedev/chakra-ui";
 import { useOne } from "@refinedev/core";
 import { IconSquareCheck, IconSquareX } from "@tabler/icons-react";
-import { Show } from "@/components/crud";
-import { FormTitle, ShowHeaderButtons } from "@/components/ui";
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { TConfig, TLocation, TOption, TProject } from "@/types";
 import Lightbox from "yet-another-react-lightbox";
 import Counter from "yet-another-react-lightbox/plugins/counter";
 import Video from "yet-another-react-lightbox/plugins/video";
 
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import "yet-another-react-lightbox/plugins/counter.css";
 import "yet-another-react-lightbox/styles.css";
 
@@ -39,13 +41,13 @@ const LOC_TABLE = "locations";
 const RESOURCE = "projects";
 const CONFIGS_TABLE = "configs";
 
-export const ProjectShow = () => {
+const ProjectShow = () => {
   const [open_hero, setOpen_hero] = useState(false);
   const [open_projectImage, setOpen_projectImage] = useState(false);
   const [open_project_videos, setOpen_project_videos] = useState(false);
   const [image_array, setImage_array] = useState([{ src: "" }]);
 
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const [isPhone] = useMediaQuery("(max-width: 570px)");
 
   const { data: projectData, isLoading: projectIsLoading } = useOne<TProject>({
@@ -83,17 +85,17 @@ export const ProjectShow = () => {
   const project_description = ProjectDetail?.project_description ?? [];
   const rental_prospect_description =
     ProjectDetail?.rental_prospect_description ?? [];
-
   const projectMedia = ProjectDetail?.project_media;
 
   let category_wise_project_image: { src: string }[][] = [];
 
-  configsData?.data.tags.forEach((tag) => {
+  configsData?.data?.tags.forEach(tag => {
     category_wise_project_image.push([]);
   });
-  configsData?.data.tags.forEach((tag_obj, index) => {
-    projectMedia?.images.forEach((img_obj) => {
-      img_obj.tags.forEach((tag) => {
+
+  configsData?.data?.tags.forEach((tag_obj, index) => {
+    projectMedia?.images.forEach(img_obj => {
+      img_obj.tags.forEach(tag => {
         if (tag === tag_obj.value) {
           category_wise_project_image[index].push({ src: img_obj.url });
         }
@@ -107,7 +109,7 @@ export const ProjectShow = () => {
 
   const hero_image_array = [{ src: "" }];
 
-  hero_image.forEach((element) => {
+  hero_image.forEach(element => {
     hero_image_array.push({ src: element });
   });
   hero_image_array.shift();
@@ -124,7 +126,7 @@ export const ProjectShow = () => {
   ];
 
   return (
-    <Show
+    <Create
       isLoading={projectIsLoading}
       wrapperProps={{
         maxWidth: "768px",
@@ -132,7 +134,6 @@ export const ProjectShow = () => {
         px: isPhone ? "0.8rem" : "2.5rem",
       }}
       title={<FormTitle property={ProjectDetail?.project_name} />}
-      breadcrumb={null}
       headerProps={{ p: 2 }}
       headerButtons={
         <ShowHeaderButtons
@@ -151,7 +152,7 @@ export const ProjectShow = () => {
             <Heading
               as="h4"
               size="md"
-              style={{ position: "sticky", top: "7rem" }}
+              style={{ position: "sticky", top: "3.5rem" }}
             >
               Basic Info
             </Heading>
@@ -801,7 +802,7 @@ export const ProjectShow = () => {
 
           {ProjectDetail?.brochure_url ? (
             <Link
-              to={`${ProjectDetail?.brochure_url}`}
+              href={`${ProjectDetail?.brochure_url}`}
               style={{ justifyContent: "center", display: "flex" }}
             >
               Show pdf
@@ -811,6 +812,8 @@ export const ProjectShow = () => {
           )}
         </Grid>
       </Grid>
-    </Show>
+    </Create>
   );
 };
+
+export default ProjectShow

@@ -6,6 +6,8 @@ import { Sidebar } from "../ui";
 
 export const ThemedLayout = ({ children }: React.PropsWithChildren) => {
   return (
-    <ThemedLayoutV2 Header={() => <Header sticky />} Sider={() => <Sidebar />}>{children}</ThemedLayoutV2>
+    <ThemedLayoutV2 Header={() => <Header sticky />} Sider={() => <Sidebar />}>
+      {children}
+    </ThemedLayoutV2>
   );
 };

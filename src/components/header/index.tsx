@@ -6,10 +6,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import {
-  HamburgerMenu,
-  RefineThemedLayoutV2HeaderProps,
-} from "@refinedev/chakra-ui";
+import { RefineThemedLayoutV2HeaderProps } from "@refinedev/chakra-ui";
 import { useGetIdentity } from "@refinedev/core";
 import React from "react";
 
@@ -20,7 +17,7 @@ type IUser = {
 };
 
 export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
-  isSticky,
+  sticky,
 }) => {
   const { data: user } = useGetIdentity<IUser>();
 
@@ -32,7 +29,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   );
 
   let stickyProps: BoxProps = {};
-  if (isSticky) {
+  if (sticky) {
     stickyProps = {
       position: "sticky",
       top: 0,
@@ -52,11 +49,11 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
       height="64px"
       bg={bgColor}
       borderBottom="1px"
-      borderBottomColor={useColorModeValue("gray.200", "gray.700")}
+      borderBottomColor={useColorModeValue("gray.700", "gray.700")}
       {...stickyProps}
       zIndex={20}
     >
-      <HamburgerMenu />
+      {/* <HamburgerMenu /> */}
 
       <HStack>
         {/* <IconButton

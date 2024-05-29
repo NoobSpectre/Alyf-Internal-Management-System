@@ -1,6 +1,5 @@
 import { Box, BoxProps, HStack, Spinner, StackProps } from "@chakra-ui/react";
 import { ReactNode } from "react";
-import { FormTitle } from "../ui";
 import { BackButton } from "../ui/BackButton";
 
 type CreateProps = {
@@ -11,6 +10,7 @@ type CreateProps = {
   wrapperProps?: StackProps;
   contentProps?: BoxProps;
   headerProps?: BoxProps;
+  title?: ReactNode;
 };
 
 export const Create = ({
@@ -21,6 +21,7 @@ export const Create = ({
   wrapperProps,
   contentProps,
   headerProps,
+  title,
 }: CreateProps) => {
   return (
     <Box
@@ -56,7 +57,7 @@ export const Create = ({
         <Box minW={200}>
           <HStack>
             <BackButton />
-            <FormTitle />
+            {title}
           </HStack>
         </Box>
         <Box
