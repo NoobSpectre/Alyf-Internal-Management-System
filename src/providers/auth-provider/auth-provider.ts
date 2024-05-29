@@ -1,6 +1,6 @@
 "use client";
 
-import { supabaseClient } from "@lib/supabase-client";
+import { supabaseClient } from "@/lib/supabase-client";
 import { AuthBindings } from "@refinedev/core";
 import Cookies from "js-cookie";
 

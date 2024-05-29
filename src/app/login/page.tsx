@@ -1,7 +1,9 @@
-import { AuthPage } from "@/components/auth-page";
+// import { AuthPage } from "@/components/auth-page";
+
 import { authProviderServer } from "@/providers/auth-provider";
 import { redirect } from "next/navigation";
 import { LoginTitle } from "./LoginTitle";
+import { AuthPage } from "@refinedev/chakra-ui";
 
 export default async function Login() {
   const data = await getData();
@@ -18,7 +20,7 @@ export default async function Login() {
       type="login"
       title={<LoginTitle />}
       formProps={{
-        defaultvalues: {
+        defaultValues: {
           email: process.env.NEXT_PUBLIC_ADMIN_EMAIL_ID as string,
           password: process.env.NEXT_PUBLIC_ADMIN_PASSWORD as string,
         },
