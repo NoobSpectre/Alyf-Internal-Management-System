@@ -1,20 +1,4 @@
-import {
-  Box,
-  BoxProps,
-  HStack,
-  Heading,
-  IconButton,
-  Spinner,
-  StackProps,
-} from "@chakra-ui/react";
-import {
-  useBack,
-  useNavigation,
-  useRefineContext,
-  useResource,
-  useRouterType,
-} from "@refinedev/core";
-// import { IconArrowLeft } from "@tabler/icons";
+import { Box, BoxProps, HStack, Spinner, StackProps } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { FormTitle } from "../ui";
 import { BackButton } from "../ui/BackButton";
@@ -22,111 +6,29 @@ import { BackButton } from "../ui/BackButton";
 type CreateProps = {
   children: ReactNode;
   isLoading?: boolean;
-  resource?: string;
   headerButtons?: ReactNode;
   headerButtonProps?: BoxProps;
   wrapperProps?: StackProps;
   contentProps?: BoxProps;
   headerProps?: BoxProps;
-  goBack?: ReactNode;
-  breadcrumb?: ReactNode;
-  title: ReactNode;
 };
 
 export const Create = ({
   children,
-  // saveButtonProps: saveButtonPropsFromProps,
   isLoading = false,
-  resource: resourceFromProps,
-  // footerButtons: footerButtonsFromProps,
-  // footerButtonProps,
   headerButtons,
   headerButtonProps,
   wrapperProps,
   contentProps,
   headerProps,
-  goBack: goBackFromProps,
-  breadcrumb: breadcrumbFromProps,
-  title,
 }: CreateProps) => {
-  const { options: { breadcrumb: globalBreadcrumb } = {} } = useRefineContext();
-
-  const routerType = useRouterType();
-  const back = useBack();
-  const { goBack } = useNavigation();
-
-  const { resource, action, identifier } = useResource(resourceFromProps);
-
-  // const breadcrumb =
-  //   typeof breadcrumbFromProps === "undefined"
-  //     ? globalBreadcrumb
-  //     : breadcrumbFromProps;
-
-  // const saveButtonProps: SaveButtonProps = {
-  //   ...(isLoading ? { disabled: true } : {}),
-  //   ...saveButtonPropsFromProps,
-  // };
-
-  // const defaultFooterButtons = <SaveButton {...saveButtonProps} />;
-
-  const buttonBack =
-    goBackFromProps === (false || null) ? null : (
-      <IconButton
-        aria-label="back"
-        rounded={0}
-        variant="ghost"
-        size="sm"
-        onClick={
-          action !== "list" || typeof action !== "undefined"
-            ? routerType === "legacy"
-              ? goBack
-              : back
-            : undefined
-        }
-      >
-        {typeof goBackFromProps !== "undefined"
-          ? goBackFromProps
-          : // <IconArrowLeft />
-            null}
-      </IconButton>
-    );
-
-  // const footerButtons = footerButtonsFromProps
-  //   ? typeof footerButtonsFromProps === 'function'
-  //     ? footerButtonsFromProps({
-  //         defaultButtons: defaultFooterButtons,
-  //         saveButtonProps,
-  //       })
-  //     : footerButtonsFromProps
-  //   : defaultFooterButtons;
-
-  const renderTitle = () => {
-    if (title === false) return null;
-
-    if (title) {
-      if (typeof title === "string" || typeof title === "number") {
-        return (
-          <Heading
-            as="h3"
-            size="lg"
-            // className={RefinePageHeaderClassNames.Title}
-          >
-            {title}
-          </Heading>
-        );
-      }
-
-      return title;
-    }
-  };
-
   return (
     <Box
       position="relative"
-      bg="chakra-body-bg"
+      bgColor="#0f172a"
       borderRadius="md"
       px="4"
-      py="3"
+      py="1rem"
       {...wrapperProps}
     >
       {isLoading && (
@@ -138,14 +40,14 @@ export const Create = ({
         />
       )}
       <Box
-        mb="3"
+        // mb="3"
         display="flex"
         justifyContent="space-between"
         alignItems="center"
         flexWrap={{ base: "wrap", md: "nowrap" }}
         gap="3"
         pos="sticky"
-        top="4rem"
+        top="0"
         bgColor="#1e293b"
         boxShadow="-1px 0 #1e293b, 1px 0 #1e293b"
         zIndex={1}
@@ -170,15 +72,6 @@ export const Create = ({
       <Box opacity={isLoading ? 0.5 : undefined} {...contentProps}>
         {children}
       </Box>
-      {/* <Box
-        display="flex"
-        justifyContent="flex-end"
-        gap="2"
-        mt="8"
-        {...footerButtonProps}
-      >
-        {footerButtons}
-      </Box> */}
     </Box>
   );
 };
