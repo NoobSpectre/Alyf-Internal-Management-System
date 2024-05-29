@@ -26,7 +26,7 @@ import { IconSquareCheck, IconSquareX } from "@tabler/icons-react";
 import { Show } from "@/components/crud";
 import { FormTitle, ShowHeaderButtons } from "@/components/ui";
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+// import { Link, useParams } from "react-router-dom";
 import { TConfig, TLocation, TOption, TProject } from "@/types";
 import Lightbox from "yet-another-react-lightbox";
 import Counter from "yet-another-react-lightbox/plugins/counter";
@@ -34,24 +34,31 @@ import Video from "yet-another-react-lightbox/plugins/video";
 
 import "yet-another-react-lightbox/plugins/counter.css";
 import "yet-another-react-lightbox/styles.css";
+import Link from "next/link";
+import { useParams, useSearchParams } from "next/navigation";
 
 const LOC_TABLE = "locations";
 const RESOURCE = "projects";
 const CONFIGS_TABLE = "configs";
 
-export const ProjectShow = () => {
+const ProjectShow = () => {
   const [open_hero, setOpen_hero] = useState(false);
   const [open_projectImage, setOpen_projectImage] = useState(false);
   const [open_project_videos, setOpen_project_videos] = useState(false);
   const [image_array, setImage_array] = useState([{ src: "" }]);
 
-  const { id } = useParams();
+  // const searchParams = useSearchParams();
+  // const id = searchParams.get("id") || "";
+  const { id } = useParams<{ id: string }>();
+  console.log(id);
   const [isPhone] = useMediaQuery("(max-width: 570px)");
 
   const { data: projectData, isLoading: projectIsLoading } = useOne<TProject>({
     resource: RESOURCE,
     id,
   });
+
+  console.log(projectData);
 
   const { data: locationData, isLoading: locationIsLoading } =
     useOne<TLocation>({
@@ -101,7 +108,7 @@ export const ProjectShow = () => {
     });
   });
 
-  console.log(category_wise_project_image);
+  // console.log(category_wise_project_image);
 
   const hero_image: string[] = ProjectDetail?.hero_images ?? [];
 
@@ -801,7 +808,7 @@ export const ProjectShow = () => {
 
           {ProjectDetail?.brochure_url ? (
             <Link
-              to={`${ProjectDetail?.brochure_url}`}
+              href={`${ProjectDetail?.brochure_url}`}
               style={{ justifyContent: "center", display: "flex" }}
             >
               Show pdf
@@ -814,3 +821,5 @@ export const ProjectShow = () => {
     </Show>
   );
 };
+
+export default ProjectShow;
