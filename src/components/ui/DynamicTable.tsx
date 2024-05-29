@@ -1,3 +1,4 @@
+import { TProject } from "@/types";
 import {
   Button,
   Divider,
@@ -16,27 +17,26 @@ import {
   Th,
   Thead,
   Tr,
-} from '@chakra-ui/react';
-import { IconPlus, IconTrash } from '@tabler/icons';
-import { useFieldArray, useFormContext } from 'react-hook-form';
-import { TProject } from 'types';
+} from "@chakra-ui/react";
+import { IconPlus, IconTrash } from "@tabler/icons-react";
+import { useFieldArray, useFormContext } from "react-hook-form";
 
 type FormDrawerProps = {
   formName:
-    | 'investment_breakdown'
-    | 'other_charges'
-    | 'full_investment_breakdown'
-    | 'full_other_charges';
+    | "investment_breakdown"
+    | "other_charges"
+    | "full_investment_breakdown"
+    | "full_other_charges";
   drawerHeader?: string;
   isPhone: boolean;
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
 };
 
 export const DynamicTable = ({
   drawerHeader,
   formName,
   isPhone,
-  size = 'sm',
+  size = "sm",
 }: FormDrawerProps) => {
   const {
     control,
@@ -73,10 +73,10 @@ export const DynamicTable = ({
         <Button
           size="sm"
           bgColor="#1da1f2"
-          _active={{ transform: 'scale(0.98)' }}
-          _hover={{ bgColor: '#1a94da' }}
-          sx={{ display: 'flex', px: isPhone ? 1.5 : 3, gap: 1.5 }}
-          onClick={() => append({ name: '', label: '', amount: 0 })}
+          _active={{ transform: "scale(0.98)" }}
+          _hover={{ bgColor: "#1a94da" }}
+          sx={{ display: "flex", px: isPhone ? 1.5 : 3, gap: 1.5 }}
+          onClick={() => append({ name: "", label: "", amount: 0 })}
         >
           <IconPlus fontSize="large" />
           {!isPhone && <Text>Add Row</Text>}

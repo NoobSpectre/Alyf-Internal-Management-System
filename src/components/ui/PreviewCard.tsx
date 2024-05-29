@@ -1,3 +1,5 @@
+import { supabaseClient } from "@/lib/supabase-client";
+import { TConfig, TOption, TUploadedFile, TUploadedVideo } from "@/types";
 import {
   Badge,
   Box,
@@ -26,24 +28,22 @@ import {
   useColorMode,
   useDisclosure,
   useToast,
-} from '@chakra-ui/react';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+} from "@chakra-ui/react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import {
   IconCheck,
   IconGripVertical,
   IconPhotoEdit,
   IconTrash,
   IconX,
-} from '@tabler/icons';
-import { Select } from 'chakra-react-select';
-import { supabaseClient } from 'lib';
-import { CSSProperties, VideoHTMLAttributes, useEffect, useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { TConfig, TOption, TUploadedFile, TUploadedVideo } from 'types';
+} from "@tabler/icons-react";
+import { Select } from "chakra-react-select";
+import { CSSProperties, VideoHTMLAttributes, useEffect, useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 const bucket_name =
-  (process.env.REACT_APP_STORAGE_BUCKET as string) || 'AlyfStorage';
+  (process.env.REACT_APP_STORAGE_BUCKET as string) || "AlyfStorage";
 
 // type TRenders = {
 //   [K in keyof Filetypes]: {
@@ -62,9 +62,9 @@ type TRenderFileProps = {
   style?: CSSProperties;
   attributes?: VideoHTMLAttributes<HTMLVideoElement>;
 } & (
-  | { fileType: 'image'; file: TUploadedFile }
+  | { fileType: "image"; file: TUploadedFile }
   | {
-      fileType: 'video';
+      fileType: "video";
       file: TUploadedVideo;
     }
 );
@@ -80,13 +80,13 @@ const renderFile = ({
   attributes,
 }: TRenderFileProps) => {
   switch (fileType) {
-    case 'video':
+    case "video":
       return (
         <video
           width="100%"
           poster={file.poster}
           onClick={onClick}
-          style={{ objectFit: 'cover', ...style }}
+          style={{ objectFit: "cover", ...style }}
           onLoad={setLoading}
           {...attributes}
         >
@@ -94,14 +94,14 @@ const renderFile = ({
             src={file.url}
             style={{
               filter: isLoading
-                ? 'grayscale(100%) blur(12px)'
-                : 'grayscale(0) blur(0)',
+                ? "grayscale(100%) blur(12px)"
+                : "grayscale(0) blur(0)",
             }}
           />
-          Sorry, your device doesn't support videos!
+          Sorry, your device doesn&apos;t support videos!
         </video>
       );
-    case 'image':
+    case "image":
     default:
       return (
         <Image
@@ -110,10 +110,10 @@ const renderFile = ({
           alt={alt}
           width="100%"
           style={{
-            objectFit: 'cover',
+            objectFit: "cover",
             filter: isLoading
-              ? 'grayscale(100%) blur(12px)'
-              : 'grayscale(0) blur(0)',
+              ? "grayscale(100%) blur(12px)"
+              : "grayscale(0) blur(0)",
             ...style,
           }}
           onLoad={setLoading}
@@ -128,8 +128,8 @@ type TPreviewCardProps = {
   refreshPage: () => void;
   optionTags?: readonly TOption[];
 } & (
-  | { fileType: 'image'; file: TUploadedFile }
-  | { fileType: 'video'; file: TUploadedVideo }
+  | { fileType: "image"; file: TUploadedFile }
+  | { fileType: "video"; file: TUploadedVideo }
 );
 
 export const PreviewCard = ({
@@ -141,7 +141,7 @@ export const PreviewCard = ({
 }: TPreviewCardProps) => {
   const [cardFileLoading, setCardFileLoading] = useState(true);
   const [modalFileLoading, setModalFileLoading] = useState(true);
-  
+
   const {
     attributes,
     listeners,
@@ -154,14 +154,14 @@ export const PreviewCard = ({
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
-    zIndex: isDragging ? 99 : 'auto',
+    zIndex: isDragging ? 99 : "auto",
   };
 
   const toast = useToast();
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure(); // image modal
 
-  const { control, reset, handleSubmit } = useForm<Pick<TConfig, 'tags'>>({
+  const { control, reset, handleSubmit } = useForm<Pick<TConfig, "tags">>({
     defaultValues: {
       tags: optionTags?.filter(tag => file.tags.includes(tag.value)),
     },
@@ -173,29 +173,28 @@ export const PreviewCard = ({
     });
   }, [reset, optionTags, file.tags]);
 
-
   const deleteCard = async () => {
-    if (file.url.startsWith('https://storage.googleapis.com')) {
+    if (file.url.startsWith("https://storage.googleapis.com")) {
       toast({
-        title: 'Error!',
+        title: "Error!",
         description: "Image doesn't exist in supabase bucket!",
-        status: 'error',
+        status: "error",
         duration: 2000,
         isClosable: true,
       });
       return;
     }
 
-    const _filepath = file.url.split(bucket_name + '/')[1]; // AlyfStorage/
+    const _filepath = file.url.split(bucket_name + "/")[1]; // AlyfStorage/
     // https://xufbrckkiskrczvobafr.supabase.co/storage/v1/object/public/AlyfStorage/af672bfe-3656-4855-9628-8d568f6a7746/images/image.pdf
     // https://storage.googleapis.com/sharenest/alyf_web_images/The%20Banyan%20Tree%20-%202%20BHK/Hall/media_1.jpg
 
     let localStorageFiles: string | null = null;
 
-    if (fileType === 'image')
-      localStorageFiles = localStorage.getItem('uploaded_images');
-    else if (fileType === 'video')
-      localStorageFiles = localStorage.getItem('uploaded_videos');
+    if (fileType === "image")
+      localStorageFiles = localStorage.getItem("uploaded_images");
+    else if (fileType === "video")
+      localStorageFiles = localStorage.getItem("uploaded_videos");
 
     if (localStorageFiles === null) return;
 
@@ -208,7 +207,7 @@ export const PreviewCard = ({
         toast({
           title: error.name,
           description: error.message,
-          status: 'error',
+          status: "error",
           duration: 2000,
           isClosable: true,
         });
@@ -221,39 +220,39 @@ export const PreviewCard = ({
         ({ id }) => id !== file.id
       );
 
-      if (fileType === 'image')
+      if (fileType === "image")
         localStorage.setItem(
-          'uploaded_images',
+          "uploaded_images",
           JSON.stringify(new_uploaded_files)
         );
-      else if (fileType === 'video')
+      else if (fileType === "video")
         localStorage.setItem(
-          'uploaded_videos',
+          "uploaded_videos",
           JSON.stringify(new_uploaded_files)
         );
       refreshPage();
 
       toast({
-        title: 'Success',
+        title: "Success",
         description: `Removed ${fileType}!`,
-        status: 'success',
+        status: "success",
         duration: 2000,
         isClosable: true,
       });
     } catch (error) {
-      if (typeof error === 'string')
+      if (typeof error === "string")
         toast({
-          title: 'Error!',
+          title: "Error!",
           description: error,
-          status: 'error',
+          status: "error",
           duration: 2000,
           isClosable: true,
         });
       else
         toast({
-          title: 'Error!',
-          description: 'An unexpected error occured!',
-          status: 'error',
+          title: "Error!",
+          description: "An unexpected error occured!",
+          status: "error",
           duration: 2000,
           isClosable: true,
         });
@@ -262,17 +261,17 @@ export const PreviewCard = ({
     }
   };
 
-  const addCardTags: SubmitHandler<Pick<TConfig, 'tags'>> = ({
+  const addCardTags: SubmitHandler<Pick<TConfig, "tags">> = ({
     tags: newTags,
   }) => {
     let localStorageFiles: string | null = null;
 
-    console.log('reached!');
+    console.log("reached!");
 
-    if (fileType === 'image')
-      localStorageFiles = localStorage.getItem('uploaded_images');
-    else if (fileType === 'video')
-      localStorageFiles = localStorage.getItem('uploaded_videos');
+    if (fileType === "image")
+      localStorageFiles = localStorage.getItem("uploaded_images");
+    else if (fileType === "video")
+      localStorageFiles = localStorage.getItem("uploaded_videos");
 
     if (localStorageFiles === null) return;
 
@@ -288,14 +287,14 @@ export const PreviewCard = ({
       };
     });
 
-    if (fileType === 'image')
+    if (fileType === "image")
       localStorage.setItem(
-        'uploaded_images',
+        "uploaded_images",
         JSON.stringify(new_uploaded_files)
       );
-    else if (fileType === 'video')
+    else if (fileType === "video")
       localStorage.setItem(
-        'uploaded_videos',
+        "uploaded_videos",
         JSON.stringify(new_uploaded_files)
       );
 
@@ -308,9 +307,9 @@ export const PreviewCard = ({
       style={style}
       pos="relative"
       userSelect="text"
-      maxW={{ base: '150px', md: '200px' }}
+      maxW={{ base: "150px", md: "200px" }}
     >
-      <Card size="sm" sx={{ pos: 'relative', h: '100%' }} role="group">
+      <Card size="sm" sx={{ pos: "relative", h: "100%" }} role="group">
         <CardBody p={2} pb={0}>
           <Box
             w="100%"
@@ -322,7 +321,7 @@ export const PreviewCard = ({
             rounded={3}
             cursor="pointer"
           >
-            {fileType === 'image'
+            {fileType === "image"
               ? renderFile({
                   fileType,
                   alt: `project image ${index}`,
@@ -330,9 +329,9 @@ export const PreviewCard = ({
                   file,
                   isLoading: cardFileLoading,
                   setLoading: () => setCardFileLoading(false),
-                  style: { cursor: 'pointer' },
+                  style: { cursor: "pointer" },
                 })
-              : fileType === 'video'
+              : fileType === "video"
               ? renderFile({
                   fileType,
                   alt: `project image ${index}`,
@@ -340,7 +339,7 @@ export const PreviewCard = ({
                   file,
                   isLoading: cardFileLoading,
                   setLoading: () => setCardFileLoading(false),
-                  style: { cursor: 'pointer' },
+                  style: { cursor: "pointer" },
                 })
               : null}
             <Box
@@ -348,9 +347,9 @@ export const PreviewCard = ({
               inset={0}
               pointerEvents="none"
               bgImage={
-                colorMode === 'light'
-                  ? 'linear-gradient(to bottom right, rgb(265, 265, 265, 0.5), transparent)'
-                  : 'linear-gradient(to bottom right, rgb(0, 0, 0, 0.5), transparent)'
+                colorMode === "light"
+                  ? "linear-gradient(to bottom right, rgb(265, 265, 265, 0.5), transparent)"
+                  : "linear-gradient(to bottom right, rgb(0, 0, 0, 0.5), transparent)"
               }
               opacity={0}
               transition="opacity 150ms"
@@ -364,16 +363,16 @@ export const PreviewCard = ({
           {...attributes}
           {...listeners}
           sx={{
-            touchAction: 'none',
-            position: 'absolute',
+            touchAction: "none",
+            position: "absolute",
             left: 1,
             top: 2,
             opacity: { base: 1, md: 0 },
-            transition: 'opacity 150ms',
-            cursor: 'grab',
+            transition: "opacity 150ms",
+            cursor: "grab",
           }}
           _groupHover={{ opacity: 0.9 }}
-          _active={{ cursor: 'grabbing' }}
+          _active={{ cursor: "grabbing" }}
         >
           <IconGripVertical />
         </Box>
@@ -392,14 +391,14 @@ export const PreviewCard = ({
                   rounded="full"
                   bgColor="#fa2828"
                   opacity="0.9"
-                  _hover={{ bgColor: '#fa2828', opacity: 1 }}
-                  _active={{ bgColor: '#fa2828', opacity: 1 }}
-                  display={{ base: 'flex', md: 'none' }}
-                  _groupHover={{ display: 'flex' }}
+                  _hover={{ bgColor: "#fa2828", opacity: 1 }}
+                  _active={{ bgColor: "#fa2828", opacity: 1 }}
+                  display={{ base: "flex", md: "none" }}
+                  _groupHover={{ display: "flex" }}
                 >
                   <IconTrash
                     size="0.8rem"
-                    color={colorMode === 'light' ? '#efefef' : '#101010'}
+                    color={colorMode === "light" ? "#efefef" : "#101010"}
                   />
                 </IconButton>
               </PopoverTrigger>
@@ -408,7 +407,7 @@ export const PreviewCard = ({
                   Are you sure you want to delete?
                 </PopoverHeader>
                 <PopoverFooter
-                  sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}
+                  sx={{ display: "flex", justifyContent: "center", gap: 2 }}
                 >
                   <IconButton
                     aria-label="delete card"
@@ -426,12 +425,12 @@ export const PreviewCard = ({
                     size="xs"
                     bgColor="#fa2828"
                     opacity="0.9"
-                    _hover={{ bgColor: '#fa2828', opacity: 1 }}
-                    _active={{ bgColor: '#fc0f1b', opacity: 1 }}
+                    _hover={{ bgColor: "#fa2828", opacity: 1 }}
+                    _active={{ bgColor: "#fc0f1b", opacity: 1 }}
                     onClick={onClose}
                   >
                     <IconX
-                      color={colorMode === 'light' ? '#efefef' : '#101010'}
+                      color={colorMode === "light" ? "#efefef" : "#101010"}
                     />
                   </IconButton>
                 </PopoverFooter>
@@ -452,9 +451,9 @@ export const PreviewCard = ({
             <Tag
               fontSize="0.9rem"
               bgColor={
-                colorMode === 'light'
-                  ? 'rgba(0, 0, 0, 0.1)'
-                  : 'rgba(250, 250, 250, 0.2)'
+                colorMode === "light"
+                  ? "rgba(0, 0, 0, 0.1)"
+                  : "rgba(250, 250, 250, 0.2)"
               }
             >
               {file.tags[0]}
@@ -521,9 +520,9 @@ export const PreviewCard = ({
         top="-2"
         left="-2"
         bgColor={
-          colorMode === 'light'
-            ? 'rgba(0, 0, 0, 0.1)'
-            : 'rgba(250, 250, 250, 0.2)'
+          colorMode === "light"
+            ? "rgba(0, 0, 0, 0.1)"
+            : "rgba(250, 250, 250, 0.2)"
         }
       >
         {index}
@@ -543,27 +542,27 @@ export const PreviewCard = ({
 
           <ModalBody>
             <Box
-              height={{ base: '26rem', md: '30rem', '2xl': '36rem' }}
+              height={{ base: "26rem", md: "30rem", "2xl": "36rem" }}
               display="flex"
               placeContent="center"
             >
-              {fileType === 'image'
+              {fileType === "image"
                 ? renderFile({
                     fileType,
                     file,
                     isLoading: modalFileLoading,
                     setLoading: () => setModalFileLoading(false),
                     alt: `project image ${index}`,
-                    style: { objectFit: 'contain' },
+                    style: { objectFit: "contain" },
                   })
-                : fileType === 'video'
+                : fileType === "video"
                 ? renderFile({
                     fileType,
                     file,
                     isLoading: modalFileLoading,
                     setLoading: () => setModalFileLoading(false),
                     alt: `project image ${index}`,
-                    style: { objectFit: 'contain' },
+                    style: { objectFit: "contain" },
                     attributes: {
                       autoPlay: true,
                       playsInline: true,

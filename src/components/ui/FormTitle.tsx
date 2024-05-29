@@ -1,3 +1,4 @@
+import { TProject } from "@/types";
 import {
   Badge,
   Box,
@@ -10,14 +11,13 @@ import {
   MenuItem,
   MenuList,
   Text,
-} from '@chakra-ui/react';
-import { useGo, useParsed } from '@refinedev/core';
-import { IconArrowRight, IconChevronDown } from '@tabler/icons';
-import { MouseEventHandler, useState } from 'react';
-import { SubmitHandler } from 'react-hook-form';
-import { TProject } from 'types';
+} from "@chakra-ui/react";
+import { useGo, useParsed } from "@refinedev/core";
+import { IconArrowRight, IconChevronDown } from "@tabler/icons-react";
+import { MouseEventHandler, useState } from "react";
+import { SubmitHandler } from "react-hook-form";
 
-type TFormStage = '1' | '2' | '3' | '4' | '5' | '6';
+type TFormStage = "1" | "2" | "3" | "4" | "5" | "6";
 
 type TFormTitleProps = {
   property?: string;
@@ -28,12 +28,12 @@ type TFormTitleProps = {
 };
 
 export const STAGE_NAMES = {
-  '1': 'Basic Info',
-  '2': 'Description',
-  '3': 'Pricing',
-  '4': 'Image',
-  '5': 'Video',
-  '6': 'Brochure',
+  "1": "Basic Info",
+  "2": "Description",
+  "3": "Pricing",
+  "4": "Image",
+  "5": "Video",
+  "6": "Brochure",
 };
 
 export const FormTitle = ({
@@ -47,7 +47,7 @@ export const FormTitle = ({
   // const { isOpen, onOpen, onClose } = useDisclosure();
   const go = useGo();
 
-  const [formStage] = useState(stage || params?.stage || '1');
+  const [formStage] = useState(stage || params?.stage || "1");
   // const [formDestStage, setFormDestStage] = useState(formStage);
 
   const menuStageNamesList = Object.keys(STAGE_NAMES).filter(
@@ -64,19 +64,19 @@ export const FormTitle = ({
   // };
 
   const goWithoutSaving = (stage?: string) => {
-    localStorage.removeItem('uploaded_images');
-    localStorage.removeItem('uploaded_videos');
-    localStorage.removeItem('uploaded_pdf');
+    localStorage.removeItem("uploaded_images");
+    localStorage.removeItem("uploaded_videos");
+    localStorage.removeItem("uploaded_pdf");
 
     if (stage)
       go({
         to: `/${resource?.name}/edit/${id}?stage=${stage}`,
-        type: 'replace',
+        type: "replace",
       });
     else
       go({
         to: `/${resource?.name}/edit/${id}`,
-        type: 'replace',
+        type: "replace",
       });
   };
 
@@ -84,15 +84,15 @@ export const FormTitle = ({
     <>
       <Breadcrumb>
         <BreadcrumbItem>
-          {action !== 'create' ? (
+          {action !== "create" ? (
             <Badge colorScheme="whatsapp">{property}</Badge>
           ) : (
             <Text>Create</Text>
           )}
         </BreadcrumbItem>
-        {(action !== 'show' && keepEditMenu === true) && (
+        {action !== "show" && keepEditMenu === true && (
           <BreadcrumbItem>
-            {action === 'edit' ? (
+            {action === "edit" ? (
               <Menu isLazy placement="bottom">
                 <MenuButton
                   as={Badge}
@@ -116,7 +116,7 @@ export const FormTitle = ({
                       display="flex"
                       justifyContent="space-between"
                       gap={5}
-                      style={{ textDecorationLine: 'none' }}
+                      style={{ textDecorationLine: "none" }}
                       onClick={() => goWithoutSaving(stage)}
                     >
                       <Text>

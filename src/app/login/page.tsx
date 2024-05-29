@@ -1,5 +1,5 @@
-import { AuthPage } from "@components/auth-page";
-import { authProviderServer } from "@providers/auth-provider";
+import { AuthPage } from "@/components/auth-page";
+import { authProviderServer } from "@/providers/auth-provider";
 import { redirect } from "next/navigation";
 import { LoginTitle } from "./LoginTitle";
 
@@ -14,11 +14,11 @@ export default async function Login() {
     <AuthPage
       forgotPasswordLink={false}
       registerLink={false}
-      rememberMe={null}
+      rememberMe={false}
       type="login"
       title={<LoginTitle />}
       formProps={{
-        defaultValues: {
+        defaultvalues: {
           email: process.env.NEXT_PUBLIC_ADMIN_EMAIL_ID as string,
           password: process.env.NEXT_PUBLIC_ADMIN_PASSWORD as string,
         },

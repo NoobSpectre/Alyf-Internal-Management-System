@@ -1,3 +1,5 @@
+"use client";
+
 import { TConfig } from "@/types";
 import {
   Box,
@@ -13,7 +15,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { uuid } from "@supabase/supabase-js/dist/module/lib/helpers";
-// import { IconPlus } from "@tabler/icons";
+import { IconPlus } from "@tabler/icons-react";
 import { useRef } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
@@ -149,7 +151,7 @@ export const ConfigField = ({
               transition={"transform 300ms ease-out"}
               _groupHover={{ transform: "rotate(90deg)" }}
             >
-              {/* <IconPlus fontSize="large" /> */}
+              <IconPlus fontSize="large" />
             </Box>
           </Button>
         </Flex>

@@ -1,6 +1,6 @@
-import { IconButton, useDisclosure } from '@chakra-ui/react';
-import { IconRefreshDot, IconTrash } from '@tabler/icons';
-import { ConfirmationModal } from './ConfirmationModal';
+import { IconButton, useDisclosure } from "@chakra-ui/react";
+import { IconRefreshDot, IconTrash } from "@tabler/icons-react";
+import { ConfirmationModal } from "./ConfirmationModal";
 
 export const StateUpdateButton = ({
   state,
@@ -19,7 +19,7 @@ export const StateUpdateButton = ({
         aria-label="restore or delete btn"
         variant="outline"
         size="xs"
-        colorScheme={state === true ? 'whatsapp' : 'red'}
+        colorScheme={state === true ? "whatsapp" : "red"}
         onClick={onOpen}
       >
         {state === true ? (

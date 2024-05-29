@@ -1,3 +1,5 @@
+import { TDateRange, TLocation } from "@/types";
+import { getFormattedHeading, getMonthName } from "@/utils/fn";
 import {
   Box,
   Button,
@@ -33,26 +35,24 @@ import {
   Tr,
   useDisclosure,
   useToast,
-} from '@chakra-ui/react';
-import { IconTrash } from '@tabler/icons';
-import { useRef, useState } from 'react';
-import { useFieldArray, useFormContext } from 'react-hook-form';
-import { TDateRange, TLocation } from 'types';
-import { getFormattedHeading, getMonthName } from 'utils/fn';
+} from "@chakra-ui/react";
+import { IconTrash } from "@tabler/icons-react";
+import { useRef, useState } from "react";
+import { useFieldArray, useFormContext } from "react-hook-form";
 
 type TDynamicDatesProps = {
-  formName: 'seasons' | 'special_days_calender';
+  formName: "seasons" | "special_days_calender";
   formInput: string;
   header: string | null;
   isPhone: boolean;
 };
 
-const GRID_TEMPLATE_COLS = '0.6fr 5px 1fr';
-const GAP_BETWEEN_LABEL_AND_INPUT = '1rem';
+const GRID_TEMPLATE_COLS = "0.6fr 5px 1fr";
+const GAP_BETWEEN_LABEL_AND_INPUT = "1rem";
 
 const TABLE_DATA = {
-  seasons: ['start_date', 'end_date'],
-  special_days_calender: ['name', 'start_date', 'end_date'],
+  seasons: ["start_date", "end_date"],
+  special_days_calender: ["name", "start_date", "end_date"],
 };
 
 export const DynamicDates = ({
@@ -80,7 +80,7 @@ export const DynamicDates = ({
   });
 
   const removeField = (
-    where: 'seasons' | 'special_days_calender',
+    where: "seasons" | "special_days_calender",
     formInput: string
   ) => {
     const _v = getValues(where);
@@ -98,8 +98,8 @@ export const DynamicDates = ({
     ) {
       toast({
         description: "Start Date can't be greater than End Date!",
-        status: 'error',
-        title: 'Error!',
+        status: "error",
+        title: "Error!",
         duration: 2000,
         isClosable: true,
       });
@@ -107,13 +107,13 @@ export const DynamicDates = ({
     }
 
     if (
-      formName === 'special_days_calender' &&
-      nameInputRef.current?.value === ''
+      formName === "special_days_calender" &&
+      nameInputRef.current?.value === ""
     ) {
       toast({
-        description: 'Name is not provided!',
-        status: 'error',
-        title: 'Error!',
+        description: "Name is not provided!",
+        status: "error",
+        title: "Error!",
         duration: 2000,
         isClosable: true,
       });
@@ -122,8 +122,8 @@ export const DynamicDates = ({
 
     const newValue = { name: nameInputRef.current?.value, ...dateRange };
 
-    if (formName === 'seasons') append(dateRange);
-    else if (formName === 'special_days_calender') append(newValue);
+    if (formName === "seasons") append(dateRange);
+    else if (formName === "special_days_calender") append(newValue);
 
     onClose();
   };
@@ -179,7 +179,7 @@ export const DynamicDates = ({
 
       <GridItem
         as={Divider}
-        orientation={isPhone ? 'horizontal' : 'vertical'}
+        orientation={isPhone ? "horizontal" : "vertical"}
         colSpan={isPhone ? 3 : 1}
       />
 
@@ -201,7 +201,7 @@ export const DynamicDates = ({
             {fields.map((f, idx) => {
               return (
                 <Tr key={f.id}>
-                  {'name' in f ? <Td>{f.name as string}</Td> : null}
+                  {"name" in f ? <Td>{f.name as string}</Td> : null}
                   <Td>
                     {f.start_date.day} {getMonthName(f.start_date.month)}
                   </Td>
@@ -232,8 +232,8 @@ export const DynamicDates = ({
             w="100%"
             rounded={3}
             bgColor="#1da1f2"
-            _hover={{ bgColor: '#1a94da' }}
-            _active={{ bgColor: '#1681bf' }}
+            _hover={{ bgColor: "#1a94da" }}
+            _active={{ bgColor: "#1681bf" }}
             onClick={onOpen}
           >
             Add
@@ -256,7 +256,7 @@ export const DynamicDates = ({
           <ModalCloseButton />
 
           <ModalBody>
-            {formName === 'special_days_calender' ? (
+            {formName === "special_days_calender" ? (
               <Flex flexDir="column" gap={4} mb={5}>
                 <FormControl isRequired>
                   <FormLabel>Add Name</FormLabel>

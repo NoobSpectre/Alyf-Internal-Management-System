@@ -1,3 +1,4 @@
+import { TDescription } from "@/types";
 import {
   Button,
   Divider,
@@ -10,21 +11,20 @@ import {
   Text,
   Textarea,
   VStack,
-} from '@chakra-ui/react';
-import { IconPlus, IconTrash } from '@tabler/icons';
-import { useFieldArray, useFormContext } from 'react-hook-form';
-import { TDescription } from 'types';
+} from "@chakra-ui/react";
+import { IconPlus, IconTrash } from "@tabler/icons-react";
+import { useFieldArray, useFormContext } from "react-hook-form";
 
 type FormDrawerProps = {
   formName:
-    | 'location_description'
-    | 'project_description'
-    | 'rental_prospect_description';
+    | "location_description"
+    | "project_description"
+    | "rental_prospect_description";
   header?: string;
   isPhone: boolean;
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
-  placement?: 'top' | 'right' | 'bottom' | 'left';
-  formType?: 'add' | 'edit';
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
+  placement?: "top" | "right" | "bottom" | "left";
+  formType?: "add" | "edit";
 };
 
 export const DynamicDescription = ({
@@ -66,7 +66,7 @@ export const DynamicDescription = ({
         <FormControl>
           <FormLabel>Title</FormLabel>
           <Input
-            placeholder={header + ' Title'}
+            placeholder={header + " Title"}
             {...register(`${formName}.title`)}
           />
         </FormControl>
@@ -81,7 +81,7 @@ export const DynamicDescription = ({
                 <Button
                   size="xs"
                   colorScheme="red"
-                  sx={{ display: 'flex', px: 1.5, gap: 1 }}
+                  sx={{ display: "flex", px: 1.5, gap: 1 }}
                   onClick={() => remove(idx)}
                 >
                   <IconTrash size="1rem" />
@@ -102,8 +102,8 @@ export const DynamicDescription = ({
           size="sm"
           w="100%"
           colorScheme="twitter"
-          sx={{ display: 'flex', gap: 1 }}
-          onClick={() => append({ value: '' })}
+          sx={{ display: "flex", gap: 1 }}
+          onClick={() => append({ value: "" })}
         >
           <IconPlus size="1rem" />
           {!isPhone && <Text>Add Paragraph</Text>}

@@ -1,3 +1,4 @@
+import { updateProjectState } from "@/utils/db";
 import {
   Button,
   Flex,
@@ -10,20 +11,19 @@ import {
   useColorMode,
   useDisclosure,
   useToast,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 import {
   IconListDetails,
   IconPencil,
   IconRefreshDot,
   IconTrash,
-} from '@tabler/icons';
-import { useQueryClient } from '@tanstack/react-query';
-import { useUserRole } from 'contexts/useUserRole';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { updateProjectState } from 'utils/db';
-import { ConfirmationModal } from './ConfirmationModal';
-import { STAGE_NAMES } from './FormTitle';
+} from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { ConfirmationModal } from "./ConfirmationModal";
+import { STAGE_NAMES } from "./FormTitle";
+import { useUserRole } from "@/hooks/useUserRole";
+import Link from "next/link";
 
 type TShowHeaderButtonsProps = {
   resource: string;
@@ -36,18 +36,18 @@ type TShowHeaderButtonsProps = {
 
 const PROJECT_STATE_STYLES = {
   false: {
-    text: 'Delete',
+    text: "Delete",
     rightIcon: IconTrash,
-    bgColor: '#ef4444',
-    hover: { bgColor: '#dc2626' },
-    active: { bgColor: '#b91c1c' },
+    bgColor: "#ef4444",
+    hover: { bgColor: "#dc2626" },
+    active: { bgColor: "#b91c1c" },
   },
   true: {
-    text: 'Restore',
+    text: "Restore",
     rightIcon: IconRefreshDot,
-    bgColor: '#22c35e',
-    hover: { bgColor: '#179848' },
-    active: { bgColor: '#0c6c33' },
+    bgColor: "#22c35e",
+    hover: { bgColor: "#179848" },
+    active: { bgColor: "#0c6c33" },
   },
 };
 
@@ -81,7 +81,7 @@ export const ShowHeaderButtons = ({
     });
 
     queryClient.invalidateQueries({
-      type: 'all',
+      type: "all",
     });
 
     setProjectUpdating(false);
@@ -90,7 +90,7 @@ export const ShowHeaderButtons = ({
 
   return (
     <Flex
-      hidden={userRole !== 'PANEL_ADMIN'}
+      hidden={userRole !== "PANEL_ADMIN"}
       justifyContent="center"
       alignItems="center"
       gap={4}
@@ -115,10 +115,10 @@ export const ShowHeaderButtons = ({
                 display="flex"
                 justifyContent="space-between"
                 gap={5}
-                color={colorMode === 'light' ? '#0284c7' : 'skyblue'}
-                style={{ textDecorationLine: 'none' }}
-                to={
-                  stage === '1'
+                color={colorMode === "light" ? "#0284c7" : "skyblue"}
+                style={{ textDecorationLine: "none" }}
+                href={
+                  stage === "1"
                     ? `/${resource}/edit/${id}`
                     : `/${resource}/edit/${id}?stage=${stage}`
                 }
@@ -136,7 +136,7 @@ export const ShowHeaderButtons = ({
           rounded={2}
           colorScheme="twitter"
           rightIcon={<IconPencil size="1rem" />}
-          to={'/' + resource + '/edit/' + id}
+          href={"/" + resource + "/edit/" + id}
           isDisabled={projectUpdating}
         >
           Edit
@@ -156,7 +156,7 @@ export const ShowHeaderButtons = ({
               fontSize="1rem"
             />
           }
-          color={colorMode === 'light' ? '#fff' : '#000'}
+          color={colorMode === "light" ? "#fff" : "#000"}
           onClick={onOpen}
           isLoading={projectUpdating}
           loadingText="Please wait"

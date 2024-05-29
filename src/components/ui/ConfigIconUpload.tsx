@@ -1,3 +1,7 @@
+"use client";
+
+import { supabaseClient } from "@/lib/supabase-client";
+import { TConfig } from "@/types";
 import {
   Avatar,
   Badge,
@@ -20,10 +24,8 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-// import { IconFileUpload } from '@tabler/icons';
-import { supabaseClient } from "@/lib/supabase-client";
-import { TConfig } from "@/types";
 import { uuid } from "@supabase/supabase-js/dist/module/lib/helpers";
+import { IconFileUpload } from "@tabler/icons-react";
 import Uppy from "@uppy/core";
 import { Dashboard } from "@uppy/react";
 import Tus from "@uppy/tus";
@@ -334,7 +336,7 @@ export const ConfigIconUpload = ({
                 sx={{ display: "flex", px: isPhone ? 1.5 : 3, gap: 1.5 }}
                 onClick={onOpen}
               >
-                {/* <IconFileUpload fontSize="large" /> */}
+                <IconFileUpload fontSize="large" />
               </Button>
             </PopoverTrigger>
             <PopoverContent>

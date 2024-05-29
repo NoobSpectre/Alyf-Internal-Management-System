@@ -1,3 +1,4 @@
+import { TOption } from "@/types";
 import {
   Button,
   Flex,
@@ -10,15 +11,13 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
   VStack,
   useColorMode,
-} from '@chakra-ui/react';
-import Uppy from '@uppy/core';
-import { Dashboard } from '@uppy/react';
-import { Select } from 'chakra-react-select';
-import { Dispatch, SetStateAction } from 'react';
-import { TOption } from 'types';
+} from "@chakra-ui/react";
+import Uppy from "@uppy/core";
+import { Dashboard } from "@uppy/react";
+import { Select } from "chakra-react-select";
+import { Dispatch, SetStateAction } from "react";
 
 type FileUPlaodModalProps = {
   uppy: Uppy<Record<string, unknown>, Record<string, unknown>>;
@@ -45,7 +44,7 @@ export const FileUplaodModal = ({
   fileUploadError,
   optionTags,
   noInput = false,
-  id = 'project-file-upload-dashboard',
+  id = "project-file-upload-dashboard",
 }: FileUPlaodModalProps) => {
   const { colorMode } = useColorMode();
 
@@ -89,7 +88,7 @@ export const FileUplaodModal = ({
               />
               <Button
                 backgroundColor="#22c55e"
-                _hover={{ backgroundColor: '#16a34a' }}
+                _hover={{ backgroundColor: "#16a34a" }}
                 onClick={handleUpload}
               >
                 Upload
