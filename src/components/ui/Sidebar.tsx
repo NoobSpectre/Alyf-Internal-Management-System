@@ -16,7 +16,7 @@ export const Sidebar = () => {
         <HStack as={Link} href="/" replace>
           <Box w="2rem" h="2rem" rounded={50} overflow="hidden">
             <Image
-              src="/ALYF_logo.png"
+              src="../../app/Logo.png"
               alt="ALYF LOGO"
               w="100%"
               h="100%"
