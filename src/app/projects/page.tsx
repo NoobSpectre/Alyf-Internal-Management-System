@@ -358,27 +358,15 @@ export default function ProjectList() {
                 isChecked={
                   searchParams.get("deleted") === "true" ? true : false
                 }
-                onChange={
-                  () => {
-                    const str = modifyParams(
-                      searchParams.get("pageSize") ||
-                        DEFAULT_PAGESIZE.toString(),
-                      "1",
-                      searchParams.get("deleted") === "true" ? "false" : "true",
-                      searchParams.toString()
-                    );
-                    router.push(pathname + "?" + str);
-                    console.log(str);
-                  }
-                  // searchParams.set({
-                  //   pageSize:
-                  //     searchParams.get("pageSize") ||
-                  //     DEFAULT_PAGESIZE.toString(),
-                  //   current: "1",
-                  //   deleted:
-                  //     searchParams.get("deleted") === "true" ? "false" : "true",
-                  // })
-                }
+                onChange={() => {
+                  const str = modifyParams(
+                    searchParams.get("pageSize") || DEFAULT_PAGESIZE.toString(),
+                    "1",
+                    searchParams.get("deleted") === "true" ? "false" : "true",
+                    searchParams.toString()
+                  );
+                  router.push(pathname + "?" + str);
+                }}
               />
               <FormLabel cursor="pointer" htmlFor="isChecked" mt={2}>
                 Deleted Rows
@@ -496,7 +484,15 @@ export default function ProjectList() {
               +(searchParams.get("pageSize") || DEFAULT_PAGESIZE)
           )}
           setCurrent={
-            (page) => {}
+            (page) => {
+              const str = modifyParams(
+                searchParams.get("pageSize") || DEFAULT_PAGESIZE.toString(),
+                page.toString() || "1",
+                searchParams.get("deleted") || "false",
+                searchParams.toString()
+              );
+              router.push(pathname + "?" + str);
+            }
             // setSearchParams({
             //   pageSize:
             //     searchParams.get("pageSize") || DEFAULT_PAGESIZE.toString(),
