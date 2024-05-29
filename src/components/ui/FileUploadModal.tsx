@@ -1,3 +1,5 @@
+"use client";
+
 import { TOption } from "@/types";
 import {
   Button,

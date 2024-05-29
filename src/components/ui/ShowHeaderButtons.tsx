@@ -1,3 +1,5 @@
+"use client";
+
 import { updateProjectState } from "@/utils/db";
 import {
   Button,

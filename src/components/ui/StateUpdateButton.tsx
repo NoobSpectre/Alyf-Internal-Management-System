@@ -1,3 +1,5 @@
+"use client";
+
 import { IconButton, useDisclosure } from "@chakra-ui/react";
 import { IconRefreshDot, IconTrash } from "@tabler/icons-react";
 import { ConfirmationModal } from "./ConfirmationModal";

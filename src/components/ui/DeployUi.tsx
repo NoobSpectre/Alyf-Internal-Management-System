@@ -1,3 +1,5 @@
+"use client";
+
 import { useSubscription } from "@/hooks";
 import {
   Button,

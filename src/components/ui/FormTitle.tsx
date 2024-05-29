@@ -1,3 +1,5 @@
+"use client";
+
 import { TProject } from "@/types";
 import {
   Badge,

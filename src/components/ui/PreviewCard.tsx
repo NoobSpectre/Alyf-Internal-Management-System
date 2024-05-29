@@ -1,3 +1,5 @@
+"use client";
+
 import { supabaseClient } from "@/lib/supabase-client";
 import { TConfig, TOption, TUploadedFile, TUploadedVideo } from "@/types";
 import {

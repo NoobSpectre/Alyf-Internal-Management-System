@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@chakra-ui/react";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import { MouseEventHandler } from "react";

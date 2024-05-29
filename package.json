@@ -21,6 +21,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@octokit/rest": "^20.1.1",
+    "@refinedev/chakra-ui": "^2.29.1",
     "@refinedev/cli": "^2.16.21",
     "@refinedev/core": "^4.47.1",
     "@refinedev/devtools": "^1.1.32",
