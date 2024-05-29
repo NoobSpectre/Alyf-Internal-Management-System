@@ -1,3 +1,5 @@
+"use client";
+
 import { usePagination } from "@/hooks/usePagination";
 import { Box, Button, HStack, IconButton } from "@chakra-ui/react";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";

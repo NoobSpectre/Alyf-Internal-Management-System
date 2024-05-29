@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Flex, HStack, Text } from "@chakra-ui/react";
 import { useBack, useNavigation, useRouterType } from "@refinedev/core";
 import Link from "next/link";

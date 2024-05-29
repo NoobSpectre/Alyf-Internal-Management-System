@@ -1,3 +1,5 @@
+"use client";
+
 import { useUserRole } from "@/hooks/useUserRole";
 import { Box, HStack, Image, Text } from "@chakra-ui/react";
 import { ThemedSiderV2 } from "@refinedev/chakra-ui";

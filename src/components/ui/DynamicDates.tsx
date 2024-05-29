@@ -1,3 +1,5 @@
+"use client";
+
 import { TDateRange, TLocation } from "@/types";
 import { getFormattedHeading, getMonthName } from "@/utils/fn";
 import {

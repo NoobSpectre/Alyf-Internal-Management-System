@@ -5,11 +5,10 @@ import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 import routerProvider from "@refinedev/nextjs-router";
 import { Metadata } from "next";
 import { ReactNode, Suspense } from "react";
-
-import "./global.css";
-import { cookies } from "next/headers";
-import { RefineThemes } from "@refinedev/chakra-ui";
 import { Providers } from "./provider";
+
+import { cookies } from "next/headers";
+import "./global.css";
 
 export const metadata: Metadata = {
   title: "Refine",
@@ -27,7 +26,7 @@ export default function RootLayout({
   const defaultMode = theme?.value === "dark" ? "dark" : "light";
   return (
     <html lang="en">
-      <body>
+      <body style={{ backgroundColor: "#0f172a" }}>
         <Suspense>
           <RefineKbarProvider>
             <Providers>
@@ -49,8 +48,8 @@ export default function RootLayout({
                   {
                     name: "projects",
                     list: "/projects",
-                    // create: "/projects/create",
-                    // edit: "/projects/edit/:id",
+                    create: "/projects/create",
+                    edit: "/projects/edit/:id",
                     show: "/projects/show/:id",
                     meta: {
                       canDelete: true,

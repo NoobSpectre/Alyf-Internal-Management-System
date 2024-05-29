@@ -1,3 +1,5 @@
+"use client";
+
 import { TDescription } from "@/types";
 import {
   Button,

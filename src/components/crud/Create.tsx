@@ -16,6 +16,8 @@ import {
 } from "@refinedev/core";
 // import { IconArrowLeft } from "@tabler/icons";
 import { ReactNode } from "react";
+import { FormTitle } from "../ui";
+import { BackButton } from "../ui/BackButton";
 
 type CreateProps = {
   children: ReactNode;
@@ -150,14 +152,9 @@ export const Create = ({
         {...headerProps}
       >
         <Box minW={200}>
-          {/* {typeof breadcrumb !== 'undefined' ? (
-            <>{breadcrumb}</>
-          ) : (
-            <Breadcrumb />
-          )} */}
           <HStack>
-            {buttonBack}
-            {renderTitle()}
+            <BackButton />
+            <FormTitle />
           </HStack>
         </Box>
         <Box

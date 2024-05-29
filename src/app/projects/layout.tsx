@@ -1,5 +1,3 @@
-import { Box, HStack } from "@chakra-ui/react";
-import { Layout as BaseLayout } from "@/components/layout";
 import { authProviderServer } from "@/providers/auth-provider";
 import { redirect } from "next/navigation";
 import React from "react";

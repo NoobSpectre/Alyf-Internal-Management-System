@@ -1,7 +1,7 @@
 "use client";
 
 import { PropsWithChildren } from "react";
-import { Breadcrumb } from "../breadcrumb";
+// import { Breadcrumb } from "../breadcrumb";
 import { Menu } from "../menu";
 
 export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
@@ -9,7 +9,7 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
     <div className="layout">
       <Menu />
       <div className="content">
-        <Breadcrumb />
+        {/* <Breadcrumb /> */}
         <div>{children}</div>
       </div>
     </div>
