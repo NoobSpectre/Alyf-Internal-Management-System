@@ -152,7 +152,7 @@ const ProjectShow = () => {
             <Heading
               as="h4"
               size="md"
-              style={{ position: "sticky", top: "3.5rem" }}
+              style={{ position: "sticky", top: "7rem" }}
             >
               Basic Info
             </Heading>
