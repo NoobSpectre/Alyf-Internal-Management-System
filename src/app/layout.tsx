@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import { ReactNode, Suspense } from "react";
 import { Providers } from "./provider";
 
+import { cookies } from "next/headers";
 import "./global.css";
 
 export const metadata: Metadata = {
@@ -20,6 +21,9 @@ export default function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const cookieStore = cookies();
+  const theme = cookieStore.get("theme");
+  const defaultMode = theme?.value === "dark" ? "dark" : "light";
   return (
     <html lang="en">
       <body style={{ backgroundColor: "#0f172a" }}>
