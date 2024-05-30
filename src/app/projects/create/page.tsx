@@ -57,6 +57,7 @@ import {
 } from "@chakra-ui/react";
 import { useGo, useList, useOne } from "@refinedev/core";
 import { IconSelect, IconX } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -78,6 +79,7 @@ const ProjectCreate = () => {
   const [isPhone] = useMediaQuery("(max-width: 570px)");
   const { isOpen, onOpen, onClose } = useDisclosure(); // location drawer
   const { userRole } = useUserRole();
+  const queryClient = useQueryClient();
 
   const { data: configsData } = useOne<TConfig>({
     resource: "configs",
@@ -111,107 +113,176 @@ const ProjectCreate = () => {
     onClose();
   };
 
-  const onSave: SubmitHandler<TProject> = async data => {
-    setSaveAndLeaveLoading(true);
+  const goToStageFns = (stageToGo?: number): SubmitHandler<TProject> => {
+    return async data => {
+      if (!stageToGo) setSaveAndLeaveLoading(true);
+      else setSaveAndContinueLoading(true);
 
-    if (
-      data["lat_long"][0]?.toString() === "" &&
-      data["lat_long"][1]?.toString() !== ""
-    ) {
-      toast({
-        title: "Error",
-        description:
-          "Please provide both latitude and longitude coordinates, or omit both.",
-        status: "error",
-        duration: 2000,
-        isClosable: true,
+      if (
+        data["lat_long"][0]?.toString() === "" &&
+        data["lat_long"][1]?.toString() !== ""
+      ) {
+        toast({
+          title: "Error",
+          description:
+            "Please provide both latitude and longitude coordinates, or omit both.",
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+        });
+
+        return;
+      } else if (
+        data["lat_long"][0]?.toString() !== "" &&
+        data["lat_long"][1]?.toString() === ""
+      ) {
+        toast({
+          title: "Error",
+          description:
+            "Please provide both latitude and longitude coordinates, or omit both.",
+          status: "error",
+          duration: 2000,
+          isClosable: true,
+        });
+
+        return;
+      }
+
+      let __lat_long: boolean = true;
+      if (
+        data["lat_long"][0]?.toString() === "" &&
+        data["lat_long"][1]?.toString() === ""
+      )
+        __lat_long = false;
+
+      data = {
+        ...data,
+        lat_long: __lat_long
+          ? [Number(data["lat_long"][0]), Number(data["lat_long"][1])]
+          : [],
+        stages_completed:
+          data["stages_completed"] < 1 ? 1 : data["stages_completed"],
+      };
+
+      if (stageToGo)
+        await createAndContinue(data, go, toast, NEXT_STAGE, {
+          from: PROJECTS_TABLE,
+        });
+      else await createAndLeave(data, go, toast, { from: PROJECTS_TABLE });
+
+      queryClient.invalidateQueries({
+        type: "all",
       });
 
-      return;
-    } else if (
-      data["lat_long"][0]?.toString() !== "" &&
-      data["lat_long"][1]?.toString() === ""
-    ) {
-      toast({
-        title: "Error",
-        description:
-          "Please provide both latitude and longitude coordinates, or omit both.",
-        status: "error",
-        duration: 2000,
-        isClosable: true,
-      });
-
-      return;
-    }
-
-    let __lat_long: boolean = true;
-    if (
-      data["lat_long"][0]?.toString() === "" &&
-      data["lat_long"][1]?.toString() === ""
-    )
-      __lat_long = false;
-
-    data = {
-      ...data,
-      lat_long: __lat_long
-        ? [Number(data["lat_long"][0]), Number(data["lat_long"][1])]
-        : [],
+      if (!stageToGo) setSaveAndLeaveLoading(false);
+      else setSaveAndContinueLoading(false);
     };
-
-    createAndLeave(data, go, toast, { from: PROJECTS_TABLE });
   };
 
-  const onSaveandContinue: SubmitHandler<TProject> = async data => {
-    setSaveAndContinueLoading(true);
+  // const onSave: SubmitHandler<TProject> = async data => {
+  //   setSaveAndLeaveLoading(true);
 
-    if (
-      data["lat_long"][0]?.toString() === "" &&
-      data["lat_long"][1]?.toString() !== ""
-    ) {
-      toast({
-        title: "Error",
-        description:
-          "Please provide both latitude and longitude coordinates, or omit both.",
-        status: "error",
-        duration: 2000,
-        isClosable: true,
-      });
+  //   if (
+  //     data["lat_long"][0]?.toString() === "" &&
+  //     data["lat_long"][1]?.toString() !== ""
+  //   ) {
+  //     toast({
+  //       title: "Error",
+  //       description:
+  //         "Please provide both latitude and longitude coordinates, or omit both.",
+  //       status: "error",
+  //       duration: 2000,
+  //       isClosable: true,
+  //     });
 
-      return;
-    } else if (
-      data["lat_long"][0]?.toString() !== "" &&
-      data["lat_long"][1]?.toString() === ""
-    ) {
-      toast({
-        title: "Error",
-        description:
-          "Please provide both latitude and longitude coordinates, or omit both.",
-        status: "error",
-        duration: 2000,
-        isClosable: true,
-      });
+  //     return;
+  //   } else if (
+  //     data["lat_long"][0]?.toString() !== "" &&
+  //     data["lat_long"][1]?.toString() === ""
+  //   ) {
+  //     toast({
+  //       title: "Error",
+  //       description:
+  //         "Please provide both latitude and longitude coordinates, or omit both.",
+  //       status: "error",
+  //       duration: 2000,
+  //       isClosable: true,
+  //     });
 
-      return;
-    }
+  //     return;
+  //   }
 
-    let __lat_long: boolean = true;
-    if (
-      data["lat_long"][0]?.toString() === "" &&
-      data["lat_long"][1]?.toString() === ""
-    )
-      __lat_long = false;
+  //   let __lat_long: boolean = true;
+  //   if (
+  //     data["lat_long"][0]?.toString() === "" &&
+  //     data["lat_long"][1]?.toString() === ""
+  //   )
+  //     __lat_long = false;
 
-    data = {
-      ...data,
-      lat_long: __lat_long
-        ? [Number(data["lat_long"][0]), Number(data["lat_long"][1])]
-        : [],
-    };
+  //   data = {
+  //     ...data,
+  //     lat_long: __lat_long
+  //       ? [Number(data["lat_long"][0]), Number(data["lat_long"][1])]
+  //       : [],
+  //   };
 
-    createAndContinue(data, go, toast, NEXT_STAGE, { from: PROJECTS_TABLE });
+  //   createAndLeave(data, go, toast, { from: PROJECTS_TABLE });
+  // };
 
-    setSaveAndContinueLoading(false);
-  };
+  // const onSaveandContinue: SubmitHandler<TProject> = async data => {
+  //   setSaveAndContinueLoading(true);
+
+  //   if (
+  //     data["lat_long"][0]?.toString() === "" &&
+  //     data["lat_long"][1]?.toString() !== ""
+  //   ) {
+  //     toast({
+  //       title: "Error",
+  //       description:
+  //         "Please provide both latitude and longitude coordinates, or omit both.",
+  //       status: "error",
+  //       duration: 2000,
+  //       isClosable: true,
+  //     });
+
+  //     return;
+  //   } else if (
+  //     data["lat_long"][0]?.toString() !== "" &&
+  //     data["lat_long"][1]?.toString() === ""
+  //   ) {
+  //     toast({
+  //       title: "Error",
+  //       description:
+  //         "Please provide both latitude and longitude coordinates, or omit both.",
+  //       status: "error",
+  //       duration: 2000,
+  //       isClosable: true,
+  //     });
+
+  //     return;
+  //   }
+
+  //   let __lat_long: boolean = true;
+  //   if (
+  //     data["lat_long"][0]?.toString() === "" &&
+  //     data["lat_long"][1]?.toString() === ""
+  //   )
+  //     __lat_long = false;
+
+  //   data = {
+  //     ...data,
+  //     lat_long: __lat_long
+  //       ? [Number(data["lat_long"][0]), Number(data["lat_long"][1])]
+  //       : [],
+  //   };
+
+  //   createAndContinue(data, go, toast, NEXT_STAGE, { from: PROJECTS_TABLE });
+
+  //   setSaveAndContinueLoading(false);
+  // };
+
+  const onSave = goToStageFns();
+  const onSaveandContinue = goToStageFns(NEXT_STAGE);
 
   if (userRole === "PANEL_USER") {
     return <Unauthorize />;
