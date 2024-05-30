@@ -3,6 +3,7 @@
 import { Create } from "@/components/crud";
 import {
   ContinueSubmitButton,
+  FormTitle,
   LeaveSubmitButton,
   Unauthorize,
 } from "@/components/ui";
@@ -224,6 +225,7 @@ const ProjectCreate = () => {
         mx: "auto",
         px: isPhone ? "0.8rem" : "2.5rem",
       }}
+      title={<FormTitle />}
       headerProps={{ p: 2 }}
     >
       <form onSubmit={handleSubmit(onSave)} noValidate>

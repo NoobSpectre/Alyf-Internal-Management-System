@@ -778,7 +778,13 @@ const ProjectShow = () => {
           >
             {hero_image.length > 0 ? (
               hero_image.map((image, idx) => (
-                <Image key={idx} src={image} width={100} height={100} />
+                <Image
+                  key={idx}
+                  src={image}
+                  alt={"hero image " + idx + 1}
+                  width={100}
+                  height={100}
+                />
               ))
             ) : (
               <Text>N/A</Text>
@@ -816,4 +822,4 @@ const ProjectShow = () => {
   );
 };
 
-export default ProjectShow
+export default ProjectShow;

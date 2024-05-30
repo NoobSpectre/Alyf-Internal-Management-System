@@ -29,15 +29,16 @@ export const Create = ({
       bgColor="#0f172a"
       borderRadius="md"
       px="4"
-      py="1rem"
+      py="3"
       {...wrapperProps}
     >
       {isLoading && (
         <Spinner
-          position="absolute"
-          top="50%"
-          left="50%"
+          position="fixed"
+          top="14%"
+          left="55%"
           transform="translate(-50%, -50%)"
+          zIndex={99}
         />
       )}
       <Box
@@ -70,7 +71,7 @@ export const Create = ({
           {headerButtons}
         </Box>
       </Box>
-      <Box opacity={isLoading ? 0.5 : undefined} {...contentProps}>
+      <Box opacity={isLoading ? 0 : 1} {...contentProps}>
         {children}
       </Box>
     </Box>
