@@ -1,4 +1,5 @@
 import { authProviderServer } from "@/providers/auth-provider";
+import { Box } from "@chakra-ui/react";
 import { redirect } from "next/navigation";
 import React from "react";
 import { ThemedLayout } from "@/components/themed-layout";

@@ -3,20 +3,12 @@ import {
   Box,
   BoxProps,
   HStack,
-  Icon,
-  // Icon,
-  IconButton,
   Text,
-  useColorMode,
   useColorModeValue,
-} from '@chakra-ui/react';
-import {
-  HamburgerMenu,
-  RefineThemedLayoutV2HeaderProps,
-} from '@refinedev/chakra-ui';
-import { useGetIdentity } from '@refinedev/core';
-import { IconMoon, IconSun } from '@tabler/icons-react';
-import React from 'react';
+} from "@chakra-ui/react";
+import { RefineThemedLayoutV2HeaderProps } from "@refinedev/chakra-ui";
+import { useGetIdentity } from "@refinedev/core";
+import React from "react";
 
 type IUser = {
   id: number;
@@ -25,21 +17,21 @@ type IUser = {
 };
 
 export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
-  isSticky,
+  sticky,
 }) => {
   const { data: user } = useGetIdentity<IUser>();
 
-  const { colorMode, toggleColorMode } = useColorMode();
+  // const { colorMode, toggleColorMode } = useColorMode();
 
   const bgColor = useColorModeValue(
-    'refine.header.bg.light',
-    'refine.header.bg.dark'
+    "refine.header.bg.dark",
+    "refine.header.bg.dark"
   );
 
   let stickyProps: BoxProps = {};
-  if (isSticky) {
+  if (sticky) {
     stickyProps = {
-      position: 'sticky',
+      position: "sticky",
       top: 0,
       zIndex: 1,
     };
@@ -57,14 +49,14 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
       height="64px"
       bg={bgColor}
       borderBottom="1px"
-      borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
+      borderBottomColor={useColorModeValue("gray.700", "gray.700")}
       {...stickyProps}
       zIndex={20}
     >
-      <HamburgerMenu />
+      {/* <HamburgerMenu /> */}
 
       <HStack>
-        <IconButton
+        {/* <IconButton
           variant="ghost"
           aria-label="Toggle theme"
           onClick={toggleColorMode}
@@ -74,7 +66,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
             w="24px"
             h="24px"
           />
-        </IconButton>
+        </IconButton> */}
         {(user?.avatar || user?.name) && (
           <HStack>
             {user?.name && (

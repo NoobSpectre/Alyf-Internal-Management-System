@@ -1,4 +1,8 @@
 "use client";
+
+import { Create } from "@/components/crud";
+import { FormTitle, ShowHeaderButtons } from "@/components/ui";
+import { TConfig, TLocation, TOption, TProject } from "@/types";
 import {
   Box,
   Button,
@@ -23,14 +27,11 @@ import {
 import { DateField, NumberField } from "@refinedev/chakra-ui";
 import { useOne } from "@refinedev/core";
 import { IconSquareCheck, IconSquareX } from "@tabler/icons-react";
-import { Show } from "@/components/crud";
-import { FormTitle, ShowHeaderButtons } from "@/components/ui";
 import { useState } from "react";
-// import { Link, useParams } from "react-router-dom";
-import { TConfig, TLocation, TOption, TProject } from "@/types";
 import Lightbox from "yet-another-react-lightbox";
 import Counter from "yet-another-react-lightbox/plugins/counter";
 import Video from "yet-another-react-lightbox/plugins/video";
+
 
 import "yet-another-react-lightbox/plugins/counter.css";
 import "yet-another-react-lightbox/styles.css";
@@ -113,7 +114,7 @@ const ProjectShow = () => {
 
   const hero_image_array = [{ src: "" }];
 
-  hero_image.forEach((element) => {
+  hero_image.forEach(element => {
     hero_image_array.push({ src: element });
   });
   hero_image_array.shift();
@@ -130,7 +131,7 @@ const ProjectShow = () => {
   ];
 
   return (
-    <Show
+    <Create
       isLoading={projectIsLoading}
       wrapperProps={{
         maxWidth: "768px",
@@ -791,7 +792,13 @@ const ProjectShow = () => {
           >
             {hero_image.length > 0 ? (
               hero_image.map((image, idx) => (
-                <Image key={idx} src={image} width={100} height={100} />
+                <Image
+                  key={idx}
+                  src={image}
+                  alt={"hero image " + idx + 1}
+                  width={100}
+                  height={100}
+                />
               ))
             ) : (
               <Text>N/A</Text>
@@ -815,7 +822,7 @@ const ProjectShow = () => {
 
           {projectData?.data?.brochure_url ? (
             <Link
-              href={`${projectData?.data?.brochure_url}`}
+              to={`${ProjectDetail?.brochure_url}`}
               style={{ justifyContent: "center", display: "flex" }}
             >
               Show pdf
@@ -825,8 +832,6 @@ const ProjectShow = () => {
           )}
         </Grid>
       </Grid>
-    </Show>
+    </Create>
   );
 };
-
-export default ProjectShow;
