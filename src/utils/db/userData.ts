@@ -8,7 +8,7 @@ export const getUserRole = async () => {
     console.log(error);
     return { role: null, error: error };
   }
-
+  console.log(data);
   const role = data.user.app_metadata.app_roles.admin_panel_app as TUserRoles;
 
   return { role, error };

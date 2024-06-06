@@ -31,8 +31,6 @@ import { useState } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import Counter from "yet-another-react-lightbox/plugins/counter";
 import Video from "yet-another-react-lightbox/plugins/video";
-
-
 import "yet-another-react-lightbox/plugins/counter.css";
 import "yet-another-react-lightbox/styles.css";
 import Link from "next/link";
@@ -139,7 +137,6 @@ const ProjectShow = () => {
         px: isPhone ? "0.8rem" : "2.5rem",
       }}
       title={<FormTitle property={projectData?.data?.project_name} />}
-      breadcrumb={null}
       headerProps={{ p: 2 }}
       headerButtons={
         <ShowHeaderButtons
@@ -822,7 +819,7 @@ const ProjectShow = () => {
 
           {projectData?.data?.brochure_url ? (
             <Link
-              to={`${ProjectDetail?.brochure_url}`}
+              href={`${projectData.data?.brochure_url}`}
               style={{ justifyContent: "center", display: "flex" }}
             >
               Show pdf
@@ -835,3 +832,5 @@ const ProjectShow = () => {
     </Create>
   );
 };
+
+export default ProjectShow;
