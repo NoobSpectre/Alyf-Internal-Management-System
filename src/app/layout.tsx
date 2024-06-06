@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import { ReactNode, Suspense } from "react";
 import { Providers } from "./provider";
 
+import { ThemedLayout } from "@/components/themed-layout";
 import { cookies } from "next/headers";
 import "./global.css";
 
@@ -36,24 +37,25 @@ export default function RootLayout({
                 dataProvider={dataProvider}
                 resources={[
                   {
-                    name: "blog_posts",
-                    list: "/blog-posts",
-                    create: "/blog-posts/create",
-                    edit: "/blog-posts/edit/:id",
-                    show: "/blog-posts/show/:id",
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                  {
                     name: "projects",
                     list: "/projects",
                     create: "/projects/create",
                     edit: "/projects/edit/:id",
                     show: "/projects/show/:id",
-                    meta: {
-                      canDelete: true,
-                    },
+                    meta: { canDelete: true, idColumnName: "project_id" },
+                  },
+                  {
+                    name: "locations",
+                    list: "/locations",
+                    create: "/locations/create",
+                    edit: "/locations/edit/:id",
+                    show: "/locations/show/:id",
+                    meta: { canDelete: true, idColumnName: "locatin_id" },
+                  },
+                  {
+                    name: "configs",
+                    create: "/configs",
+                    meta: { idColumnName: "config_id" },
                   },
                 ]}
                 options={{
@@ -63,7 +65,7 @@ export default function RootLayout({
                   projectId: "RFzO6Z-1fZKgi-ISO87J",
                 }}
               >
-                {children}
+                <ThemedLayout>{children}</ThemedLayout>
                 <RefineKbar />
               </Refine>
             </Providers>

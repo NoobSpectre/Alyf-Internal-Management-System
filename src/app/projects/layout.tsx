@@ -1,8 +1,6 @@
 import { authProviderServer } from "@/providers/auth-provider";
-import { Box } from "@chakra-ui/react";
 import { redirect } from "next/navigation";
 import React from "react";
-import { ThemedLayout } from "@/components/themed-layout";
 
 export default async function Layout({ children }: React.PropsWithChildren) {
   const data = await getData();
@@ -78,7 +76,7 @@ export default async function Layout({ children }: React.PropsWithChildren) {
   //     </Box>
   //   </BaseLayout>
   // );
-  return <ThemedLayout>{children}</ThemedLayout>;
+  return <>{children}</>;
 }
 
 async function getData() {
