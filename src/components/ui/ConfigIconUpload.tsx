@@ -386,6 +386,7 @@ export const ConfigIconUpload = ({
             py={1}
             px={2}
             cursor="pointer"
+            colorScheme="blue"
             onClick={() => inputFieldRef.current?.focus()}
           >
             Add {field}

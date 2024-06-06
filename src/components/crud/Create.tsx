@@ -1,4 +1,11 @@
-import { Box, BoxProps, HStack, Spinner, StackProps } from "@chakra-ui/react";
+import {
+  Box,
+  BoxProps,
+  HStack,
+  Heading,
+  Spinner,
+  StackProps,
+} from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { BackButton } from "../ui/BackButton";
 
@@ -23,6 +30,26 @@ export const Create = ({
   headerProps,
   title,
 }: CreateProps) => {
+  const renderTitle = () => {
+    if (title === false) return null;
+
+    if (title) {
+      if (typeof title === "string" || typeof title === "number") {
+        return (
+          <Heading
+            as="h3"
+            size="lg"
+            // className={RefinePageHeaderClassNames.Title}
+          >
+            {title}
+          </Heading>
+        );
+      }
+
+      return title;
+    }
+  };
+
   return (
     <Box
       position="relative"
@@ -58,7 +85,7 @@ export const Create = ({
         <Box minW={200}>
           <HStack>
             <BackButton />
-            {title}
+            {renderTitle()}
           </HStack>
         </Box>
         <Box
