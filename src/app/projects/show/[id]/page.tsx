@@ -32,10 +32,11 @@ import Lightbox from "yet-another-react-lightbox";
 import Counter from "yet-another-react-lightbox/plugins/counter";
 import Video from "yet-another-react-lightbox/plugins/video";
 
-import Link from "next/link";
-import { useParams } from "next/navigation";
+
 import "yet-another-react-lightbox/plugins/counter.css";
 import "yet-another-react-lightbox/styles.css";
+import Link from "next/link";
+import { useParams, useSearchParams } from "next/navigation";
 
 const LOC_TABLE = "locations";
 const RESOURCE = "projects";
@@ -53,7 +54,12 @@ const ProjectShow = () => {
   const { data: projectData, isLoading: projectIsLoading } = useOne<TProject>({
     resource: RESOURCE,
     id,
+    meta: {
+      idColumnName: "project_id",
+    },
   });
+
+  console.log(projectData);
 
   const { data: locationData, isLoading: locationIsLoading } =
     useOne<TLocation>({
@@ -71,41 +77,40 @@ const ProjectShow = () => {
     meta: { idColumnName: "config_id" },
   });
 
-  const ProjectDetail = projectData?.data;
-  const LocationDetail = locationData?.data;
+  // Checkikng Array data if they are not available then assign them a empty array
 
-  const Investment_breakdown_data = ProjectDetail?.investment_breakdown ?? [];
-  const OtherChargesData = ProjectDetail?.other_charges ?? [];
-  const aminities = ProjectDetail?.amenities ?? [];
-  const features = ProjectDetail?.features ?? [];
+  const Investment_breakdown_data =
+    projectData?.data.investment_breakdown ?? [];
+  const OtherChargesData = projectData?.data?.other_charges ?? [];
+  const aminities = projectData?.data?.amenities ?? [];
+  const features = projectData?.data?.features ?? [];
   const full_investment_breakdown_data =
-    ProjectDetail?.full_investment_breakdown ?? [];
-  const full_other_charges_data = ProjectDetail?.full_other_charges ?? [];
-  const location_description = ProjectDetail?.location_description ?? [];
-  const project_description = ProjectDetail?.project_description ?? [];
+    projectData?.data?.full_investment_breakdown ?? [];
+  const full_other_charges_data = projectData?.data?.full_other_charges ?? [];
+  const location_description = projectData?.data?.location_description ?? [];
+  const project_description = projectData?.data?.project_description ?? [];
   const rental_prospect_description =
-    ProjectDetail?.rental_prospect_description ?? [];
-  const projectMedia = ProjectDetail?.project_media;
+    projectData?.data?.rental_prospect_description ?? [];
+
+  const projectMedia = projectData?.data?.project_media;
 
   let category_wise_project_image: { src: string }[][] = [];
 
-  configsData?.data?.tags.forEach(tag => {
-    category_wise_project_image.push([]);
-  });
+  console.log(configsData?.data);
+  // configsData?.data.tags.forEach((tag) => {
+  //   category_wise_project_image.push([]);
+  // });
+  // configsData?.data.tags.forEach((tag_obj, index) => {
+  //   projectMedia?.images.forEach((img_obj) => {
+  //     img_obj.tags.forEach((tag) => {
+  //       if (tag === tag_obj.value) {
+  //         category_wise_project_image[index].push({ src: img_obj.url });
+  //       }
+  //     });
+  //   });
+  // });
 
-  configsData?.data?.tags.forEach((tag_obj, index) => {
-    projectMedia?.images.forEach(img_obj => {
-      img_obj.tags.forEach(tag => {
-        if (tag === tag_obj.value) {
-          category_wise_project_image[index].push({ src: img_obj.url });
-        }
-      });
-    });
-  });
-
-  console.log(category_wise_project_image);
-
-  const hero_image: string[] = ProjectDetail?.hero_images ?? [];
+  const hero_image: string[] = projectData?.data?.hero_images ?? [];
 
   const hero_image_array = [{ src: "" }];
 
@@ -133,14 +138,15 @@ const ProjectShow = () => {
         mx: "auto",
         px: isPhone ? "0.8rem" : "2.5rem",
       }}
-      title={<FormTitle property={ProjectDetail?.project_name} />}
+      title={<FormTitle property={projectData?.data?.project_name} />}
+      breadcrumb={null}
       headerProps={{ p: 2 }}
       headerButtons={
         <ShowHeaderButtons
           resource={RESOURCE}
-          id={ProjectDetail?.project_id}
+          id={projectData?.data?.project_id}
           columnToMatchBy="project_id"
-          deleted={ProjectDetail?.deleted}
+          deleted={projectData?.data?.deleted}
         />
       }
     >
@@ -163,8 +169,8 @@ const ProjectShow = () => {
                 Project Name
               </Heading>
               <Text>
-                {ProjectDetail?.project_name
-                  ? ProjectDetail?.project_name
+                {projectData?.data?.project_name
+                  ? projectData?.data?.project_name
                   : "N/A"}
               </Text>
             </Box>
@@ -173,14 +179,14 @@ const ProjectShow = () => {
               <Heading as="h5" size="small">
                 Location Name
               </Heading>
-              <Text>{LocationDetail?.location_name}</Text>
+              <Text>{locationData?.data?.location_name}</Text>
             </Box>
 
             <Box>
               <Heading as="h5" size="small">
                 Creation Date
               </Heading>
-              <DateField value={ProjectDetail?.created_at} />
+              <DateField value={projectData?.data?.created_at} />
             </Box>
 
             <Box>
@@ -188,7 +194,9 @@ const ProjectShow = () => {
                 Updation Date
               </Heading>
               <DateField
-                value={ProjectDetail?.updated_at ?? ProjectDetail?.created_at}
+                value={
+                  projectData?.data?.updated_at ?? projectData?.data?.created_at
+                }
               />
             </Box>
 
@@ -196,7 +204,7 @@ const ProjectShow = () => {
               <Heading as="h5" size="small">
                 Project Id
               </Heading>
-              <Text>{ProjectDetail?.project_id}</Text>
+              <Text>{projectData?.data?.project_id}</Text>
             </Box>
           </GridItem>
         </Grid>
@@ -219,20 +227,20 @@ const ProjectShow = () => {
               <Heading as="h5" size="small">
                 Total Shares
               </Heading>
-              <NumberField value={ProjectDetail?.total_shares ?? 0} />
+              <NumberField value={projectData?.data?.total_shares ?? 0} />
             </Box>
             <Box>
               <Heading as="h5" size="small">
                 Available Shares
               </Heading>
-              <NumberField value={ProjectDetail?.available_shares ?? 0} />
+              <NumberField value={projectData?.data?.available_shares ?? 0} />
             </Box>
             <Box>
               <Heading as="h5" size="small">
                 Total Shares to display
               </Heading>
               <NumberField
-                value={ProjectDetail?.total_shares_to_display ?? 0}
+                value={projectData?.data?.total_shares_to_display ?? 0}
               />
             </Box>
             <Box>
@@ -240,7 +248,7 @@ const ProjectShow = () => {
                 Available Shares to display
               </Heading>
               <NumberField
-                value={ProjectDetail?.available_shares_to_display ?? 0}
+                value={projectData?.data?.available_shares_to_display ?? 0}
               />
             </Box>
           </GridItem>
@@ -264,25 +272,25 @@ const ProjectShow = () => {
               <Heading as="h5" size="small">
                 Built up Area
               </Heading>
-              <NumberField value={ProjectDetail?.built_up_area ?? 0} />
+              <NumberField value={projectData?.data?.built_up_area ?? 0} />
             </Box>
             <Box>
               <Heading as="h5" size="small">
                 Plot Area
               </Heading>
-              <NumberField value={ProjectDetail?.plot_area ?? 0} />
+              <NumberField value={projectData?.data?.plot_area ?? 0} />
             </Box>
             <Box>
               <Heading as="h5" size="small">
                 Carpet Area
               </Heading>
-              <NumberField value={ProjectDetail?.carpet_area ?? 0} />
+              <NumberField value={projectData?.data?.carpet_area ?? 0} />
             </Box>
             <Box>
               <Heading as="h5" size="small">
                 Super Area
               </Heading>
-              <NumberField value={ProjectDetail?.super_area ?? 0} />
+              <NumberField value={projectData?.data?.super_area ?? 0} />
             </Box>
           </GridItem>
         </Grid>
@@ -306,8 +314,8 @@ const ProjectShow = () => {
                 BHK Configuration
               </Heading>
               <Text>
-                {ProjectDetail?.bhk_configuration
-                  ? ProjectDetail?.bhk_configuration
+                {projectData?.data?.bhk_configuration
+                  ? projectData?.data?.bhk_configuration
                   : "N/A"}
               </Text>
             </Box>
@@ -315,14 +323,16 @@ const ProjectShow = () => {
               <Heading as="h5" size="small">
                 Property Count
               </Heading>
-              <NumberField value={ProjectDetail?.property_count ?? 0} />
+              <NumberField value={projectData?.data?.property_count ?? 0} />
             </Box>
             <Box>
               <Heading as="h5" size="small">
                 Category
               </Heading>
               <Text>
-                {ProjectDetail?.category ? ProjectDetail?.category : "N/A"}
+                {projectData?.data?.category
+                  ? projectData?.data?.category
+                  : "N/A"}
               </Text>
             </Box>
             <Box>
@@ -330,8 +340,8 @@ const ProjectShow = () => {
                 Property Type
               </Heading>
               <Text>
-                {ProjectDetail?.property_type
-                  ? ProjectDetail?.property_type
+                {projectData?.data?.property_type
+                  ? projectData?.data?.property_type
                   : "N/A"}
               </Text>
             </Box>
@@ -339,7 +349,7 @@ const ProjectShow = () => {
               <Heading as="h5" size="small">
                 Available Buy Option
               </Heading>
-              <Text>{ProjectDetail?.available_buy_options}</Text>
+              <Text>{projectData?.data?.available_buy_options}</Text>
             </Box>
           </GridItem>
         </Grid>
@@ -364,7 +374,7 @@ const ProjectShow = () => {
             colSpan={{ base: 2, sm: 1 }}
           >
             <Flex gap={1}>
-              {ProjectDetail?.is_test_project ? (
+              {projectData?.data?.is_test_project ? (
                 <IconSquareCheck />
               ) : (
                 <IconSquareX />
@@ -372,7 +382,7 @@ const ProjectShow = () => {
               <Text w="fit-content">Is test project</Text>
             </Flex>
             <Flex gap={1}>
-              {ProjectDetail?.is_active_in_website ? (
+              {projectData?.data?.is_active_in_website ? (
                 <IconSquareCheck />
               ) : (
                 <IconSquareX />
@@ -380,7 +390,7 @@ const ProjectShow = () => {
               <Text>Is active on Website</Text>
             </Flex>
             <Flex gap={1}>
-              {ProjectDetail?.is_featured_project ? (
+              {projectData?.data?.is_featured_project ? (
                 <IconSquareCheck />
               ) : (
                 <IconSquareX />
@@ -388,7 +398,11 @@ const ProjectShow = () => {
               <Text>Is featured project</Text>
             </Flex>
             <Flex gap={1}>
-              {ProjectDetail?.soldout ? <IconSquareCheck /> : <IconSquareX />}
+              {projectData?.data?.soldout ? (
+                <IconSquareCheck />
+              ) : (
+                <IconSquareX />
+              )}
               <Text>Sold Out</Text>
             </Flex>
           </SimpleGrid>
@@ -806,9 +820,9 @@ const ProjectShow = () => {
             Brochure
           </Heading>
 
-          {ProjectDetail?.brochure_url ? (
+          {projectData?.data?.brochure_url ? (
             <Link
-              href={`${ProjectDetail?.brochure_url}`}
+              to={`${ProjectDetail?.brochure_url}`}
               style={{ justifyContent: "center", display: "flex" }}
             >
               Show pdf
@@ -821,5 +835,3 @@ const ProjectShow = () => {
     </Create>
   );
 };
-
-export default ProjectShow;
