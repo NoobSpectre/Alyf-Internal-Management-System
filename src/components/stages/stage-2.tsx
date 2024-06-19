@@ -12,7 +12,6 @@ import { useGo } from "@refinedev/core";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-
 const NEXT_STAGE = 3;
 
 export const Stage2 = ({
@@ -35,19 +34,19 @@ export const Stage2 = ({
         title: projectData?.location_description[0],
         details: projectData?.location_description
           .slice(1)
-          .map(ele => ({ value: ele })),
+          .map((ele) => ({ value: ele })),
       },
       project_description: {
         title: projectData?.project_description[0],
         details: projectData?.project_description
           .slice(1)
-          .map(ele => ({ value: ele })),
+          .map((ele) => ({ value: ele })),
       },
       rental_prospect_description: {
         title: projectData?.rental_prospect_description[0],
         details: projectData?.rental_prospect_description
           .slice(1)
-          .map(ele => ({ value: ele })),
+          .map((ele) => ({ value: ele })),
       },
     },
   });
@@ -58,25 +57,25 @@ export const Stage2 = ({
         title: projectData?.location_description[0],
         details: projectData?.location_description
           .slice(1)
-          .map(ele => ({ value: ele })),
+          .map((ele) => ({ value: ele })),
       },
       project_description: {
         title: projectData?.project_description[0],
         details: projectData?.project_description
           .slice(1)
-          .map(ele => ({ value: ele })),
+          .map((ele) => ({ value: ele })),
       },
       rental_prospect_description: {
         title: projectData?.rental_prospect_description[0],
         details: projectData?.rental_prospect_description
           .slice(1)
-          .map(ele => ({ value: ele })),
+          .map((ele) => ({ value: ele })),
       },
     });
   }, [formMethods, projectData]);
 
   const goToStageFns = (stageToGo?: number): SubmitHandler<TDescription> => {
-    return async data => {
+    return async (data) => {
       if (!projectData) return;
 
       if (!stageToGo) setSaveAndLeaveLoading(true);
@@ -126,56 +125,56 @@ export const Stage2 = ({
   const onSaveandContinue = goToStageFns(NEXT_STAGE);
 
   return (
-    <FormProvider {...formMethods}>
-      <form id="stage-2-form" noValidate>
-        {/* form inputs container */}
-        <Grid my={8} gap={8}>
-          {/* location description */}
-          <Grid as={GridItem} gap={2}>
-            <DynamicDescription
-              header="Location Description"
-              formName="location_description"
-              isPhone={isPhone}
-            />
+      <FormProvider {...formMethods}>
+        <form id="stage-2-form" noValidate>
+          {/* form inputs container */}
+          <Grid my={8} gap={8}>
+            {/* location description */}
+            <Grid as={GridItem} gap={2}>
+              <DynamicDescription
+                header="Location Description"
+                formName="location_description"
+                isPhone={isPhone}
+              />
+            </Grid>
+
+            <Divider as={GridItem} border="1px" />
+
+            {/* project description */}
+            <Grid as={GridItem} gap={2}>
+              <DynamicDescription
+                header="Project Description"
+                formName="project_description"
+                isPhone={isPhone}
+              />
+            </Grid>
+
+            <Divider as={GridItem} border="1px" />
+
+            {/* Rental Prospect description */}
+            <Grid as={GridItem} gap={2}>
+              <DynamicDescription
+                header="Rental Prospect Description"
+                formName="rental_prospect_description"
+                isPhone={isPhone}
+              />
+            </Grid>
           </Grid>
 
-          <Divider as={GridItem} border="1px" />
-
-          {/* project description */}
-          <Grid as={GridItem} gap={2}>
-            <DynamicDescription
-              header="Project Description"
-              formName="project_description"
-              isPhone={isPhone}
+          <Box display="flex" justifyContent="flex-end" gap={3}>
+            <LeaveSubmitButton
+              isDisabled={saveAndContinueLoading}
+              isLoading={saveAndLeaveLoading}
+              onClick={formMethods.handleSubmit(onSave)}
             />
-          </Grid>
-
-          <Divider as={GridItem} border="1px" />
-
-          {/* Rental Prospect description */}
-          <Grid as={GridItem} gap={2}>
-            <DynamicDescription
-              header="Rental Prospect Description"
-              formName="rental_prospect_description"
-              isPhone={isPhone}
+            <ContinueSubmitButton
+              isDisabled={saveAndLeaveLoading}
+              isLoading={saveAndContinueLoading}
+              onClick={formMethods.handleSubmit(onSaveandContinue)}
             />
-          </Grid>
-        </Grid>
-
-        <Box display="flex" justifyContent="flex-end" gap={3}>
-          <LeaveSubmitButton
-            isDisabled={saveAndContinueLoading}
-            isLoading={saveAndLeaveLoading}
-            onClick={formMethods.handleSubmit(onSave)}
-          />
-          <ContinueSubmitButton
-            isDisabled={saveAndLeaveLoading}
-            isLoading={saveAndContinueLoading}
-            onClick={formMethods.handleSubmit(onSaveandContinue)}
-          />
-        </Box>
-      </form>
-    </FormProvider>
+          </Box>
+        </form>
+      </FormProvider>
   );
 };
 

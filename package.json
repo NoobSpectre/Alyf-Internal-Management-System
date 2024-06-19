@@ -30,6 +30,8 @@
     "@refinedev/react-hook-form": "^4.8.14",
     "@refinedev/react-table": "^5.6.6",
     "@refinedev/supabase": "^5.7.4",
+    "@supabase/ssr": "^0.3.0",
+    "@supabase/supabase-js": "^2.43.4",
     "@tabler/icons-react": "^3.5.0",
     "@tanstack/react-table": "^8.2.6",
     "@uppy/core": "^3.11.3",

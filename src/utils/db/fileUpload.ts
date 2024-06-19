@@ -1,8 +1,9 @@
-import { supabaseClient } from "@/lib/supabase-client";
+// import { supabaseClient } from "@/lib/supabase-client";
 import { TLocalStorageItems } from "@/types";
 import { ToastId, UseToastOptions } from "@chakra-ui/react";
 import { GoConfig } from "@refinedev/core";
 import { GoConfigWithResource } from "@refinedev/core/dist/hooks/router/use-go";
+import { supabaseBrowserClient } from "../supabase/client";
 
 type TSupabaseOptions = {
   from: string;
@@ -18,7 +19,7 @@ export const uploadFilesandLeave = async <T>(
   keyToRemove: TLocalStorageItems
 ) => {
   try {
-    const { error } = await supabaseClient
+    const { error } = await supabaseBrowserClient
       .from(supabaseOptions.from)
       .update({
         ...data_to_upload,
@@ -91,7 +92,7 @@ export const uploadFilesandContinue = async <T>(
   keyToRemove: TLocalStorageItems
 ) => {
   try {
-    const { error } = await supabaseClient
+    const { error } = await supabaseBrowserClient
       .from(supabaseOptions.from)
       .update({
         ...data_to_upload,

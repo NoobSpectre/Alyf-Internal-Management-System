@@ -1,7 +1,8 @@
 "use client";
 
-import { supabaseClient } from "@/lib/supabase-client";
+// import { supabaseClient } from "@/lib/supabase-client";
 import { TConfig, TOption, TUploadedFile, TUploadedVideo } from "@/types";
+import { supabaseBrowserClient } from "@/utils/supabase/client";
 import {
   Badge,
   Box,
@@ -201,7 +202,7 @@ export const PreviewCard = ({
     if (localStorageFiles === null) return;
 
     try {
-      const { error } = await supabaseClient.storage
+      const { error } = await supabaseBrowserClient.storage
         .from(bucket_name)
         .remove([_filepath]);
 

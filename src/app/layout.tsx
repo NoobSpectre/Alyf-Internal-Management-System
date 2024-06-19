@@ -6,10 +6,9 @@ import routerProvider from "@refinedev/nextjs-router";
 import { Metadata } from "next";
 import { ReactNode, Suspense } from "react";
 import { Providers } from "./provider";
-
-import { ThemedLayout } from "@/components/themed-layout";
 import { cookies } from "next/headers";
 import "./global.css";
+import { ThemedLayoutContextProvider } from "@refinedev/chakra-ui";
 
 export const metadata: Metadata = {
   title: "Refine",
@@ -24,10 +23,10 @@ export default function RootLayout({
 }>) {
   const cookieStore = cookies();
   const theme = cookieStore.get("theme");
-  const defaultMode = theme?.value === "dark" ? "dark" : "dark";
+  // const defaultMode = theme?.value === "dark" ? "dark" : "dark";
   return (
     <html lang="en">
-      <body style={{ backgroundColor: "#020617", minHeight: "100svh" }}>
+      <body style={{ minHeight: "100svh" }}>
         <Suspense>
           <RefineKbarProvider>
             <Providers>
@@ -54,7 +53,7 @@ export default function RootLayout({
                   },
                   {
                     name: "configs",
-                    create: "/configs",
+                    list: "/configs",
                     meta: { idColumnName: "config_id" },
                   },
                 ]}
@@ -65,7 +64,7 @@ export default function RootLayout({
                   projectId: "RFzO6Z-1fZKgi-ISO87J",
                 }}
               >
-                <ThemedLayout>{children}</ThemedLayout>
+                <>{children}</>
                 <RefineKbar />
               </Refine>
             </Providers>

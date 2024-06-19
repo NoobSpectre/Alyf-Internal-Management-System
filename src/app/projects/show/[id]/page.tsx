@@ -45,6 +45,7 @@ const ProjectShow = () => {
   const [open_projectImage, setOpen_projectImage] = useState(false);
   const [open_project_videos, setOpen_project_videos] = useState(false);
   const [image_array, setImage_array] = useState([{ src: "" }]);
+  const [video_array, setVideo_array] = useState([{ src: "", type: "" }]);
 
   const { id } = useParams<{ id: string }>();
   const [isPhone] = useMediaQuery("(max-width: 570px)");
@@ -56,8 +57,6 @@ const ProjectShow = () => {
       idColumnName: "project_id",
     },
   });
-
-  console.log(projectData);
 
   const { data: locationData, isLoading: locationIsLoading } =
     useOne<TLocation>({
@@ -93,40 +92,54 @@ const ProjectShow = () => {
   const projectMedia = projectData?.data?.project_media;
 
   let category_wise_project_image: { src: string }[][] = [];
+  let category_wise_project_video: { src: string; type: string }[][] = [];
 
-  console.log(configsData?.data);
-  // configsData?.data.tags.forEach((tag) => {
-  //   category_wise_project_image.push([]);
-  // });
-  // configsData?.data.tags.forEach((tag_obj, index) => {
-  //   projectMedia?.images.forEach((img_obj) => {
-  //     img_obj.tags.forEach((tag) => {
-  //       if (tag === tag_obj.value) {
-  //         category_wise_project_image[index].push({ src: img_obj.url });
-  //       }
-  //     });
-  //   });
-  // });
+  configsData?.data.tags.forEach((tag) => {
+    category_wise_project_image.push([]);
+    category_wise_project_video.push([]);
+  });
+
+  configsData?.data.tags.forEach((tag_obj, index) => {
+    projectMedia?.images.forEach((img_obj) => {
+      img_obj.tags.forEach((tag) => {
+        if (tag === tag_obj.value) {
+          category_wise_project_image[index].push({ src: img_obj.url });
+        }
+      });
+    });
+    projectMedia?.videos.forEach((vid_obj) => {
+      vid_obj.tags.forEach((tag) => {
+        if (tag === tag_obj.value) {
+          category_wise_project_video[index].push({
+            src: vid_obj.url,
+            type: "video/mp4",
+          });
+        }
+      });
+    });
+  });
+
+  console.log(category_wise_project_video);
 
   const hero_image: string[] = projectData?.data?.hero_images ?? [];
 
   const hero_image_array = [{ src: "" }];
 
-  hero_image.forEach(element => {
+  hero_image.forEach((element) => {
     hero_image_array.push({ src: element });
   });
   hero_image_array.shift();
 
-  let project_video_array = [
-    {
-      src: "https://youtu.be/XPGFqx8Vg-Y?si=64AKOGhOX66AaYsN",
-      type: "video/mp4",
-    },
-    {
-      src: "https://youtu.be/nNTiK9lB9sI?si=CtUwNzis7RpcaG9V",
-      type: "video/mp4",
-    },
-  ];
+  // let project_video_array = [
+  //   {
+  //     src: "https://youtu.be/XPGFqx8Vg-Y?si=64AKOGhOX66AaYsN",
+  //     type: "video/mp4",
+  //   },
+  //   {
+  //     src: "https://youtu.be/nNTiK9lB9sI?si=CtUwNzis7RpcaG9V",
+  //     type: "video/mp4",
+  //   },
+  // ];
 
   return (
     <Create
@@ -747,7 +760,7 @@ const ProjectShow = () => {
 
         {/* project videos */}
 
-        <Grid as={GridItem} gridTemplateColumns="1fr 1fr">
+        {/* <Grid as={GridItem} gridTemplateColumns="1fr 1fr">
           <Heading as="h4" size="md">
             Property videos
           </Heading>
@@ -770,6 +783,47 @@ const ProjectShow = () => {
               // ...
             ]}
             // ...
+          />
+        </Grid> */}
+
+        <Grid as={GridItem} gap={2}>
+          <Heading as="h4" size="md">
+            Property Videos
+          </Heading>
+          <HStack flexWrap="wrap">
+            {category_wise_project_video.length > 0 ? (
+              configsData?.data.tags.map((item: TOption, index: number) => (
+                <Button
+                  onClick={() => {
+                    setVideo_array(category_wise_project_video[index]);
+                    setOpen_project_videos(true);
+                  }}
+                  key={index}
+                  isDisabled={category_wise_project_video[index].length < 1}
+                >
+                  {item.label}
+                </Button>
+              ))
+            ) : (
+              <Heading as="h5" size="sm">
+                No videos right now
+              </Heading>
+            )}
+          </HStack>
+          <Lightbox
+            plugins={[Video]}
+            counter={{ container: { style: { top: "unset", bottom: 0 } } }}
+            open={open_project_videos}
+            close={() => setOpen_project_videos(false)}
+            slides={[
+              {
+                type: "video",
+                width: 1280,
+                height: 720,
+                poster: "",
+                sources: [...video_array],
+              },
+            ]}
           />
         </Grid>
 

@@ -1,7 +1,8 @@
-import { supabaseClient } from "@/lib/supabase-client";
+// import { supabaseClient } from "@/lib/supabase-client";
 import { ToastId, UseToastOptions } from "@chakra-ui/react";
 import { GoConfig } from "@refinedev/core";
 import { GoConfigWithResource } from "@refinedev/core/dist/hooks/router/use-go";
+import { supabaseBrowserClient } from "../supabase/client";
 
 export const createAndContinue = async <T>(
   data_to_upload: T,
@@ -11,7 +12,7 @@ export const createAndContinue = async <T>(
   supabaseOptions: { from: string }
 ) => {
   try {
-    const { data: dbData, error } = await supabaseClient
+    const { data: dbData, error } = await supabaseBrowserClient
       .from(supabaseOptions.from)
       .insert({
         ...data_to_upload,

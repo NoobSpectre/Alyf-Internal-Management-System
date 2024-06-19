@@ -1,6 +1,7 @@
-import { supabaseClient } from "@/lib/supabase-client";
+// import { supabaseClient } from "@/lib/supabase-client";
 import { TLocalStorageItems } from "@/types";
 import { ToastId, UseToastOptions } from "@chakra-ui/toast";
+import { supabaseBrowserClient } from "../supabase/client";
 
 const BUCKET = process.env.REACT_APP_STORAGE_BUCKET as string;
 
@@ -21,7 +22,7 @@ export const removeFromBucket = async ({
   }
 
   try {
-    const { error } = await supabaseClient.storage
+    const { error } = await supabaseBrowserClient.storage
       .from(BUCKET)
       .remove(filesToRemove);
 

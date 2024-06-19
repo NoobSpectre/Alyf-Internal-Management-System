@@ -1,5 +1,6 @@
 import { ToastId, UseToastOptions } from '@chakra-ui/toast';
-import { supabaseClient } from '@/lib/supabase-client';
+import { supabaseBrowserClient } from '../supabase/client';
+// import { supabaseClient } from '@/lib/supabase-client';
 
 type TDeleteProjectProps = {
   toast: (options?: UseToastOptions | undefined) => ToastId;
@@ -16,7 +17,7 @@ export const updateProjectState = async ({
   supabaseOptions: { id, from, columnToMatchBy, newState },
 }: TDeleteProjectProps) => {
   try {
-    const { error } = await supabaseClient
+    const { error } = await supabaseBrowserClient
       .from(from)
       .update({
         deleted: newState,

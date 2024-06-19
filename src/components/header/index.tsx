@@ -3,11 +3,18 @@ import {
   Box,
   BoxProps,
   HStack,
+  Icon,
+  IconButton,
   Text,
+  useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { RefineThemedLayoutV2HeaderProps } from "@refinedev/chakra-ui";
+import {
+  HamburgerMenu,
+  RefineThemedLayoutV2HeaderProps,
+} from "@refinedev/chakra-ui";
 import { useGetIdentity } from "@refinedev/core";
+import { IconMoon, IconSun } from "@tabler/icons-react";
 import React from "react";
 
 type IUser = {
@@ -21,10 +28,10 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
 }) => {
   const { data: user } = useGetIdentity<IUser>();
 
-  // const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode, toggleColorMode } = useColorMode();
 
   const bgColor = useColorModeValue(
-    "refine.header.bg.dark",
+    "refine.header.bg.light",
     "refine.header.bg.dark"
   );
 
@@ -53,20 +60,20 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
       {...stickyProps}
       zIndex={20}
     >
-      {/* <HamburgerMenu /> */}
+      <HamburgerMenu />
 
       <HStack>
-        {/* <IconButton
+        <IconButton
           variant="ghost"
           aria-label="Toggle theme"
           onClick={toggleColorMode}
         >
           <Icon
-            as={colorMode === 'light' ? IconMoon : IconSun}
+            as={colorMode === "light" ? IconMoon : IconSun}
             w="24px"
             h="24px"
           />
-        </IconButton> */}
+        </IconButton>
         {(user?.avatar || user?.name) && (
           <HStack>
             {user?.name && (

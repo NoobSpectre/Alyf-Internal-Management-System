@@ -1,4 +1,5 @@
-import { supabaseClient } from "@/lib/supabase-client";
+// import { supabaseClient } from "@/lib/supabase-client";
+import { supabaseBrowserClient } from "@/utils/supabase/client";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 import {
   ReactNode,
@@ -105,7 +106,7 @@ const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
   );
 
   useEffect(() => {
-    const subscriptionChannel = supabaseClient
+    const subscriptionChannel = supabaseBrowserClient
       .channel("deployment-channel")
       .on(
         "postgres_changes",
@@ -147,7 +148,7 @@ const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
 
     return () => {
       const removeSubscription = async () =>
-        await supabaseClient.removeChannel(subscriptionChannel);
+        await supabaseBrowserClient.removeChannel(subscriptionChannel);
 
       removeSubscription();
     };

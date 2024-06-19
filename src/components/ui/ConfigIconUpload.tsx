@@ -1,6 +1,6 @@
 "use client";
 
-import { supabaseClient } from "@/lib/supabase-client";
+// import { supabaseClient } from "@/lib/supabase-client";
 import { TConfig } from "@/types";
 import {
   Avatar,
@@ -34,6 +34,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 
 import "@uppy/core/dist/style.min.css";
 import "@uppy/dashboard/dist/style.min.css";
+import { supabaseBrowserClient } from "@/utils/supabase/client";
 
 const bucket_name = process.env.REACT_APP_STORAGE_BUCKET as string;
 
@@ -58,7 +59,7 @@ type TConfigIconUploadProps = {
 const onBeforeRequest = async (req: any) => {
   const {
     data: { session },
-  } = await supabaseClient.auth.getSession();
+  } = await supabaseBrowserClient.auth.getSession();
   req.setHeader("Authorization", `Bearer ${session?.access_token}`);
 };
 
@@ -227,7 +228,7 @@ export const ConfigIconUpload = ({
     );
 
     try {
-      const { error } = await supabaseClient.storage
+      const { error } = await supabaseBrowserClient.storage
         .from(bucket_name)
         .remove([fieldToRemove]);
 

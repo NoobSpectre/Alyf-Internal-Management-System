@@ -5,6 +5,7 @@ import {
   Heading,
   Spinner,
   StackProps,
+  useColorMode,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { BackButton } from "../ui/BackButton";
@@ -50,15 +51,9 @@ export const Create = ({
     }
   };
 
+  const { colorMode } = useColorMode();
   return (
-    <Box
-      position="relative"
-      bgColor="#0f172a"
-      borderRadius="md"
-      px="4"
-      py="3"
-      {...wrapperProps}
-    >
+    <Box position="relative" borderRadius="md" px="4" py="3" {...wrapperProps}>
       {isLoading && (
         <Spinner
           position="fixed"
@@ -69,16 +64,15 @@ export const Create = ({
         />
       )}
       <Box
-        // mb="3"
+        mb="3"
         display="flex"
         justifyContent="space-between"
         alignItems="center"
         flexWrap={{ base: "wrap", md: "nowrap" }}
         gap="3"
         pos="sticky"
-        top="4rem"
-        bgColor="#1e293b"
-        boxShadow="-1px 0 #1e293b, 1px 0 #1e293b"
+        top="3.9rem"
+        bgColor={colorMode === "light" ? "#f8fafc" : "#1e293b"}
         zIndex={1}
         {...headerProps}
       >

@@ -6,7 +6,7 @@ import {
   LeaveSubmitButton,
   PreviewCard,
 } from "@/components/ui";
-import { supabaseClient } from "@/lib/supabase-client";
+// import { supabaseClient } from "@/lib/supabase-client";
 import { TConfig, TOption, TStageProps, TUploadedVideo } from "@/types";
 import { uploadFilesandContinue, uploadFilesandLeave } from "@/utils/db";
 import { getFormattedUrls } from "@/utils/fn";
@@ -42,13 +42,14 @@ import { MouseEventHandler, useEffect, useState } from "react";
 
 import "@uppy/core/dist/style.min.css";
 import "@uppy/dashboard/dist/style.min.css";
+import { supabaseBrowserClient } from "@/utils/supabase/client";
 
 const NEXT_STAGE = 6;
 
-const bucket_name = process.env.REACT_APP_STORAGE_BUCKET || "AlyfStorage";
+const bucket_name = process.env.NEXT_PUBLIC_STORAGE_BUCKET || "AlyfStorage";
 
 const PARENT_FILE_PATH =
-  process.env.REACT_APP_DB_URL + "/storage/v1/object/public/" + bucket_name;
+  process.env.NEXT_PUBLIC_DB_URL + "/storage/v1/object/public/" + bucket_name;
 
 const FILE_UPLOAD_ERROR = {
   imageCategoryError: "Please enter a category before uploading...",
@@ -57,7 +58,7 @@ const FILE_UPLOAD_ERROR = {
 const onBeforeRequest = async (req: any) => {
   const {
     data: { session },
-  } = await supabaseClient.auth.getSession();
+  } = await supabaseBrowserClient.auth.getSession();
   req.setHeader("Authorization", `Bearer ${session?.access_token}`);
 };
 
@@ -74,7 +75,7 @@ export const Stage5 = ({
       restrictions: { allowedFileTypes: ["video/*"] },
     }).use(Tus, {
       endpoint:
-        (process.env.REACT_APP_DB_URL as string) +
+        (process.env.NEXT_PUBLIC_DB_URL as string) +
         "/storage/v1/upload/resumable",
       onBeforeRequest,
       allowedMetaFields: [
@@ -95,7 +96,7 @@ export const Stage5 = ({
   const [fileUploadError, setFileUploadError] = useState<string | null>(null);
   const [refresh, setRefresh] = useState(false);
 
-  const refreshPage = () => setRefresh(pv => !pv);
+  const refreshPage = () => setRefresh((pv) => !pv);
 
   const { isOpen, onClose, onOpen } = useDisclosure();
   const go = useGo();
@@ -132,9 +133,9 @@ export const Stage5 = ({
 
   const closeModal = () => onClose();
 
-  uppy.on("files-added", files => {
+  uppy.on("files-added", (files) => {
     files.forEach(
-      file =>
+      (file) =>
         (file.meta = {
           ...file.meta,
           bucketName: bucket_name,
@@ -160,7 +161,7 @@ export const Stage5 = ({
       return;
     }
 
-    uppy.getFiles().forEach(file => {
+    uppy.getFiles().forEach((file) => {
       uppy.setFileMeta(file.id, {
         objectName: `${id}/videos/${file.name}`,
       });
@@ -181,7 +182,7 @@ export const Stage5 = ({
       return;
     }
 
-    const initTags = initialVidTags.map(initTag => initTag.value);
+    const initTags = initialVidTags.map((initTag) => initTag.value);
 
     const objectNames = getFormattedUrls({
       files: successful,
@@ -210,7 +211,7 @@ export const Stage5 = ({
   const goToStageFns = (
     stageToGo?: number
   ): MouseEventHandler<HTMLButtonElement> => {
-    return async event => {
+    return async (event) => {
       event.preventDefault();
 
       if (!projectData) return;
@@ -405,11 +406,11 @@ export const Stage5 = ({
               ) : (
                 <Heading
                   as="h2"
-                  fontSize="3rem"
+                  fontSize="3rem" 
                   fontWeight="normal"
                   textAlign="center"
                 >
-                  Upload Images...
+                  Upload Videos...
                 </Heading>
               )}
             </SortableContext>

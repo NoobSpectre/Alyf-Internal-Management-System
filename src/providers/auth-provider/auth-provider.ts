@@ -1,16 +1,26 @@
 "use client";
 
-import { supabaseClient } from "@/lib/supabase-client";
+import { supabaseBrowserClient } from "@/utils/supabase/client";
 import { AuthProvider } from "@refinedev/core";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 
 export const authProvider: AuthProvider = {
   login: async ({ email, password }) => {
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-      email,
-      password,
-    });
 
+    // previous react project code 
+
+
+    // const { data, error } = await supabaseClient.auth.signInWithPassword({
+    //   email,
+    //   password,
+    // });
+
+    const { data, error } = await supabaseBrowserClient.auth.signInWithPassword(
+      {
+        email,
+        password,
+      },
+    );
     if (error) {
       return {
         success: false,
@@ -19,11 +29,15 @@ export const authProvider: AuthProvider = {
     }
 
     if (data?.session) {
-      Cookies.set("token", data.session.access_token, {
-        expires: 30, // 30 days
-        path: "/",
-      });
 
+      // previous react project code 
+
+      // Cookies.set("token", data.session.access_token, {
+        //   expires: 30, // 30 days
+        //   path: "/",
+        // });
+        
+      supabaseBrowserClient.auth.setSession(data.session);
       return {
         success: true,
         redirectTo: "/",
@@ -40,8 +54,14 @@ export const authProvider: AuthProvider = {
     };
   },
   logout: async () => {
-    Cookies.remove("token", { path: "/" });
-    const { error } = await supabaseClient.auth.signOut();
+
+    // previous react project code 
+
+    // Cookies.remove("token", { path: "/" });
+    // const { error } = await supabaseClient.auth.signOut();
+
+    // new code to resolve auth-flow bug
+    const { error } = await supabaseBrowserClient.auth.signOut();
 
     if (error) {
       return {
@@ -57,7 +77,16 @@ export const authProvider: AuthProvider = {
   },
   register: async ({ email, password }) => {
     try {
-      const { data, error } = await supabaseClient.auth.signUp({
+
+      // previous react project code 
+
+      // const { data, error } = await supabaseClient.auth.signUp({
+      //   email,
+      //   password,
+      // });
+
+      // new code to resolve auth-flow bug
+      const { data, error } = await supabaseBrowserClient.auth.signUp({
         email,
         password,
       });
@@ -91,11 +120,37 @@ export const authProvider: AuthProvider = {
     };
   },
   check: async () => {
-    const token = Cookies.get("token");
-    const { data } = await supabaseClient.auth.getUser(token);
-    const { user } = data;
 
-    if (user) {
+    // pevious react project code 
+
+    // const token = Cookies.get("token");
+    // const { data } = await supabaseClient.auth.getUser(token);
+    // const { user } = data;
+
+    // if (user) {
+    //   return {
+    //     authenticated: true,
+    //   };
+    // }
+
+    // return {
+    //   authenticated: false,
+    //   redirectTo: "/login",
+    // };
+
+    // new code to resolve auth-flow bug
+    const { data, error } = await supabaseBrowserClient.auth.getSession();
+    const { session } = data;
+
+    if (error) {
+      return {
+        authenticated: false,
+        redirectTo: "/login",
+        logout: true,
+      };
+    }
+
+    if (session) {
       return {
         authenticated: true,
       };
@@ -107,7 +162,11 @@ export const authProvider: AuthProvider = {
     };
   },
   getPermissions: async () => {
-    const user = await supabaseClient.auth.getUser();
+    //previous code of react-project
+    // const user = await supabaseClient.auth.getUser();
+
+    // new code to resolve auth-flow bug
+    const user = await supabaseBrowserClient.auth.getUser();
 
     if (user) {
       return user.data.user?.role;
@@ -116,8 +175,11 @@ export const authProvider: AuthProvider = {
     return null;
   },
   getIdentity: async () => {
-    const { data } = await supabaseClient.auth.getUser();
+    //previous react-project code
+    // const { data } = await supabaseClient.auth.getUser();
 
+    // new code to resolve auth-flow bug
+    const { data } = await supabaseBrowserClient.auth.getUser();
     if (data?.user) {
       return {
         ...data.user,

@@ -1,7 +1,8 @@
-import { supabaseClient } from "@/lib/supabase-client";
+// import { supabaseClient } from "@/lib/supabase-client";
 import { ToastId, UseToastOptions } from "@chakra-ui/react";
 import { GoConfig } from "@refinedev/core";
 import { GoConfigWithResource } from "@refinedev/core/dist/hooks/router/use-go";
+import { supabaseBrowserClient } from "../supabase/client";
 
 const RESOURCE = "projects";
 
@@ -17,7 +18,7 @@ export const createAndLeave = async <T>(
   }
 ) => {
   try {
-    const { error } = await supabaseClient.from(supabaseOptions.from).insert({
+    const { error } = await supabaseBrowserClient.from(supabaseOptions.from).insert({
       ...data_to_upload,
       updated_at: new Date(Date.now()),
     });

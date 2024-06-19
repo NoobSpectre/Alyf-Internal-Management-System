@@ -1,9 +1,10 @@
 "use client";
 
 import { FileUplaodModal, LeaveSubmitButton } from "@/components/ui";
-import { supabaseClient } from "@/lib/supabase-client";
+// import { supabaseClient } from "@/lib/supabase-client";
 import { TProject, TStageProps } from "@/types";
 import { saveAndLeave } from "@/utils/db";
+import { supabaseBrowserClient } from "@/utils/supabase/client";
 import {
   Box,
   Button,
@@ -24,12 +25,12 @@ import Tus from "@uppy/tus";
 import Link from "next/link";
 import { MouseEventHandler, useEffect, useState } from "react";
 
-const bucket_name = process.env.REACT_APP_STORAGE_BUCKET || "AlyfStorage";
+const bucket_name = process.env.NEXT_PUBLIC_STORAGE_BUCKET || "AlyfStorage";
 
 const onBeforeRequest = async (req: any) => {
   const {
     data: { session },
-  } = await supabaseClient.auth.getSession();
+  } = await supabaseBrowserClient.auth.getSession();
   req.setHeader("Authorization", `Bearer ${session?.access_token}`);
 };
 
@@ -49,7 +50,7 @@ export const Stage6 = ({
       },
     }).use(Tus, {
       endpoint:
-        (process.env.REACT_APP_DB_URL as string) +
+        (process.env.NEXT_PUBLIC_DB_URL as string) +
         "/storage/v1/upload/resumable",
       onBeforeRequest,
       allowedMetaFields: [
@@ -134,7 +135,7 @@ export const Stage6 = ({
 
     const objectNames = successful.map(_file => {
       return `${
-        process.env.REACT_APP_DB_URL as string
+        process.env.NEXT_PUBLIC_DB_URL as string
       }/storage/v1/object/public/${bucket_name}/${
         _file.meta.objectName as string
       }`;
@@ -192,7 +193,7 @@ export const Stage6 = ({
     // https://xufbrckkiskrczvobafr.supabase.co/storage/v1/object/public/AlyfStorage/af672bfe-3656-4855-9628-8d568f6a7746/brochure/brochure.pdf
 
     try {
-      const { error } = await supabaseClient.storage
+      const { error } = await supabaseBrowserClient.storage
         .from(bucket_name)
         .remove([_filepath]);
 

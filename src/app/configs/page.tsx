@@ -116,6 +116,7 @@ const ConfigCreate = () => {
       // headerButtonProps={{ display: "none" }}
       headerProps={{ zIndex: 5, p: '0.5rem' }}
       contentProps={{ pointerEvents: pageLoading ? "none" : "auto" }}
+      
     >
       <FormProvider {...formMethods}>
         <form noValidate>
